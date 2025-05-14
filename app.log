@@ -504,3 +504,413 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2025-05-10 12:54:21,994 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-10 12:59:21 -05)" (scheduled at 2025-05-10 12:54:21.980317-05:00)
 2025-05-10 12:54:21,995 - asyncio - DEBUG - Using selector: SelectSelector
 2025-05-10 12:54:22,036 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-10 12:59:21 -05)" executed successfully
+2025-05-13 20:43:15,332 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-13 20:43:15,332 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-13 20:43:15,333 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-13 20:43:15,339 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-13 20:43:17,234 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-13 20:43:17,236 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-13 20:43:17,236 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-13 20:43:17,246 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-13 20:43:17,248 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-13 20:43:17,249 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-13 20:43:17,250 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 20:43:17,250 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-13 20:43:17,250 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 20:48:17.246390-05:00 (in 299.995590 seconds)
+2025-05-13 20:48:17,254 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 20:48:17,255 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 20:53:17 -05)" (scheduled at 2025-05-13 20:48:17.246390-05:00)
+2025-05-13 20:48:17,256 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 20:53:17.246390-05:00 (in 299.990211 seconds)
+2025-05-13 20:48:17,256 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 20:48:17,525 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 20:53:17 -05)" executed successfully
+2025-05-13 20:49:50,800 - backend.controladores.usuarioRegistro - INFO - Iniciando registro de usuario: unusuario@gmail.com
+2025-05-13 20:49:50,929 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-13 20:49:50,933 - passlib.handlers.bcrypt - DEBUG - detected 'bcrypt' backend, version '<unknown>'
+2025-05-13 20:49:50,933 - passlib.handlers.bcrypt - DEBUG - 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-05-13 20:49:51,281 - backend.controladores.usuarioRegistro - INFO - Usuario registrado correctamente: unusuario@gmail.com. Se ha enviado correo de activación.
+2025-05-13 20:51:11,531 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-13 20:51:11,532 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-13 20:51:11,533 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-13 20:51:11,534 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-13 20:51:11,534 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-13 20:51:11,535 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-13 20:51:11,536 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:50]
+2025-05-13 20:51:11,537 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-13 20:51:11,539 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-13 20:51:11,540 - python_multipart.multipart - DEBUG - Calling on_field_name with data[51:59]
+2025-05-13 20:51:11,540 - python_multipart.multipart - DEBUG - Calling on_field_data with data[60:81]
+2025-05-13 20:51:11,542 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-13 20:51:11,542 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-13 20:51:11,546 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: unusuario@gmail.com
+2025-05-13 20:51:11,841 - backend.controladores.usuarioIngreso - WARNING - Autenticación fallida para usuario unusuario@gmail.com: Cuenta pendiente de activación.
+2025-05-13 20:51:31,240 - backend.controladores.usuarioRegistro - DEBUG - Procesando activación de cuenta con token
+2025-05-13 20:51:31,260 - backend.controladores.usuarioRegistro - INFO - Cuenta activada correctamente para: unusuario@gmail.com
+2025-05-13 20:53:17,258 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 20:53:17,259 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 20:58:17.246390-05:00 (in 299.986924 seconds)
+2025-05-13 20:53:17,259 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 20:58:17 -05)" (scheduled at 2025-05-13 20:53:17.246390-05:00)
+2025-05-13 20:53:17,260 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 20:53:17,276 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 20:58:17 -05)" executed successfully
+2025-05-13 20:53:28,077 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-13 20:53:28,077 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-13 20:53:28,078 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-13 20:53:28,078 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-13 20:53:28,078 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-13 20:53:28,079 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-13 20:53:28,079 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:50]
+2025-05-13 20:53:28,080 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-13 20:53:28,080 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-13 20:53:28,081 - python_multipart.multipart - DEBUG - Calling on_field_name with data[51:59]
+2025-05-13 20:53:28,082 - python_multipart.multipart - DEBUG - Calling on_field_data with data[60:81]
+2025-05-13 20:53:28,082 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-13 20:53:28,083 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-13 20:53:28,085 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: unusuario@gmail.com
+2025-05-13 20:53:28,362 - backend.utilidades.seguridad - DEBUG - Token creado correctamente para usuario: unusuario@gmail.com
+2025-05-13 20:53:28,363 - backend.controladores.usuarioIngreso - INFO - Login exitoso para el usuario unusuario@gmail.com
+2025-05-13 20:53:39,571 - backend.utilidades.dependencias - DEBUG - Verificando autenticación para cliente: 127.0.0.1:52467
+2025-05-13 20:53:39,572 - backend.utilidades.dependencias - DEBUG - Decodificando token JWT
+2025-05-13 20:53:39,573 - backend.utilidades.dependencias - DEBUG - Token decodificado exitosamente para: unusuario@gmail.com
+2025-05-13 20:53:39,574 - backend.utilidades.dependencias - DEBUG - Usuario autenticado exitosamente: unusuario@gmail.com
+2025-05-13 20:54:19,392 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-13 20:54:19,393 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-13 20:54:19,393 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-13 20:54:19,399 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-13 20:54:19,703 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-13 20:54:19,704 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-13 20:54:19,705 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-13 20:54:19,713 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-13 20:54:19,715 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-13 20:54:19,716 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-13 20:54:19,717 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 20:54:19,717 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-13 20:54:19,717 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 20:59:19.713809-05:00 (in 299.996291 seconds)
+2025-05-13 20:54:33,241 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-13 20:54:33,241 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-13 20:54:33,242 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-13 20:54:33,247 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-13 20:54:33,339 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-13 20:54:33,341 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-13 20:54:33,341 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-13 20:54:33,349 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-13 20:54:33,351 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-13 20:54:33,351 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-13 20:54:33,352 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 20:54:33,352 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-13 20:54:33,353 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 20:59:33.349659-05:00 (in 299.996643 seconds)
+2025-05-13 20:56:58,496 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-05-13 20:56:58,497 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-05-13 20:56:58,497 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:87]
+2025-05-13 20:56:58,498 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,499 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-05-13 20:56:58,499 - python_multipart.multipart - DEBUG - Calling on_part_data with data[91:95]
+2025-05-13 20:56:58,500 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-05-13 20:56:58,501 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-05-13 20:56:58,501 - python_multipart.multipart - DEBUG - Calling on_header_field with data[139:158]
+2025-05-13 20:56:58,502 - python_multipart.multipart - DEBUG - Calling on_header_value with data[160:185]
+2025-05-13 20:56:58,502 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,503 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-05-13 20:56:58,504 - python_multipart.multipart - DEBUG - Calling on_part_data with data[189:194]
+2025-05-13 20:56:58,505 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-05-13 20:56:58,505 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-05-13 20:56:58,506 - python_multipart.multipart - DEBUG - Calling on_header_field with data[238:257]
+2025-05-13 20:56:58,507 - python_multipart.multipart - DEBUG - Calling on_header_value with data[259:281]
+2025-05-13 20:56:58,507 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,508 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-05-13 20:56:58,508 - python_multipart.multipart - DEBUG - Calling on_part_data with data[285:292]
+2025-05-13 20:56:58,509 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-05-13 20:56:58,509 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-05-13 20:56:58,510 - python_multipart.multipart - DEBUG - Calling on_header_field with data[336:355]
+2025-05-13 20:56:58,510 - python_multipart.multipart - DEBUG - Calling on_header_value with data[357:379]
+2025-05-13 20:56:58,510 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,511 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-05-13 20:56:58,511 - python_multipart.multipart - DEBUG - Calling on_part_data with data[383:384]
+2025-05-13 20:56:58,512 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-05-13 20:56:58,512 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-05-13 20:56:58,513 - python_multipart.multipart - DEBUG - Calling on_header_field with data[428:447]
+2025-05-13 20:56:58,513 - python_multipart.multipart - DEBUG - Calling on_header_value with data[449:482]
+2025-05-13 20:56:58,513 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,514 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-05-13 20:56:58,514 - python_multipart.multipart - DEBUG - Calling on_part_data with data[486:496]
+2025-05-13 20:56:58,515 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-05-13 20:56:58,515 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-05-13 20:56:58,516 - python_multipart.multipart - DEBUG - Calling on_header_field with data[540:559]
+2025-05-13 20:56:58,516 - python_multipart.multipart - DEBUG - Calling on_header_value with data[561:584]
+2025-05-13 20:56:58,517 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,517 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-05-13 20:56:58,517 - python_multipart.multipart - DEBUG - Calling on_part_data with data[588:635]
+2025-05-13 20:56:58,518 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-05-13 20:56:58,518 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-05-13 20:56:58,519 - python_multipart.multipart - DEBUG - Calling on_header_field with data[679:698]
+2025-05-13 20:56:58,519 - python_multipart.multipart - DEBUG - Calling on_header_value with data[700:785]
+2025-05-13 20:56:58,519 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,520 - python_multipart.multipart - DEBUG - Calling on_header_field with data[787:799]
+2025-05-13 20:56:58,520 - python_multipart.multipart - DEBUG - Calling on_header_value with data[801:811]
+2025-05-13 20:56:58,521 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-05-13 20:56:58,521 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-05-13 20:56:58,522 - python_multipart.multipart - DEBUG - Calling on_part_data with data[815:61741]
+2025-05-13 20:56:58,522 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-05-13 20:56:58,523 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-13 20:56:58,530 - backend.utilidades.dependencias - DEBUG - Verificando autenticación para cliente: 127.0.0.1:52561
+2025-05-13 20:56:58,530 - backend.utilidades.dependencias - DEBUG - Decodificando token JWT
+2025-05-13 20:56:58,531 - backend.utilidades.dependencias - DEBUG - Token decodificado exitosamente para: unusuario@gmail.com
+2025-05-13 20:56:58,582 - backend.utilidades.dependencias - DEBUG - Usuario autenticado exitosamente: unusuario@gmail.com
+2025-05-13 20:57:16,368 - backend.utilidades.dependencias - DEBUG - Verificando autenticación para cliente: 127.0.0.1:52562
+2025-05-13 20:57:16,369 - backend.utilidades.dependencias - DEBUG - Decodificando token JWT
+2025-05-13 20:57:16,370 - backend.utilidades.dependencias - DEBUG - Token decodificado exitosamente para: unusuario@gmail.com
+2025-05-13 20:57:16,372 - backend.utilidades.dependencias - DEBUG - Usuario autenticado exitosamente: unusuario@gmail.com
+2025-05-13 20:59:33,361 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 20:59:33,363 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:04:33 -05)" (scheduled at 2025-05-13 20:59:33.349659-05:00)
+2025-05-13 20:59:33,363 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:04:33.349659-05:00 (in 299.986432 seconds)
+2025-05-13 20:59:33,363 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 20:59:33,602 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:04:33 -05)" executed successfully
+2025-05-13 21:04:24,694 - backend.utilidades.dependencias - DEBUG - Verificando autenticación para cliente: 127.0.0.1:52711
+2025-05-13 21:04:24,696 - backend.utilidades.dependencias - DEBUG - Decodificando token JWT
+2025-05-13 21:04:24,699 - backend.utilidades.dependencias - DEBUG - Token decodificado exitosamente para: unusuario@gmail.com
+2025-05-13 21:04:24,748 - backend.utilidades.dependencias - DEBUG - Usuario autenticado exitosamente: unusuario@gmail.com
+2025-05-13 21:04:33,361 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:04:33,362 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:09:33.349659-05:00 (in 299.987633 seconds)
+2025-05-13 21:04:33,362 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:09:33 -05)" (scheduled at 2025-05-13 21:04:33.349659-05:00)
+2025-05-13 21:04:33,362 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:04:33,377 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:09:33 -05)" executed successfully
+2025-05-13 21:04:45,811 - backend.utilidades.dependencias - DEBUG - Verificando autenticación para cliente: 127.0.0.1:52712
+2025-05-13 21:04:45,812 - backend.utilidades.dependencias - DEBUG - Decodificando token JWT
+2025-05-13 21:04:45,812 - backend.utilidades.dependencias - DEBUG - Token decodificado exitosamente para: unusuario@gmail.com
+2025-05-13 21:04:45,814 - backend.utilidades.dependencias - DEBUG - Usuario autenticado exitosamente: unusuario@gmail.com
+2025-05-13 21:09:33,359 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:09:33,360 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:14:33.349659-05:00 (in 299.989049 seconds)
+2025-05-13 21:09:33,360 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:14:33 -05)" (scheduled at 2025-05-13 21:09:33.349659-05:00)
+2025-05-13 21:09:33,361 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:09:33,394 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:14:33 -05)" executed successfully
+2025-05-13 21:14:33,363 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:14:33,365 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:19:33.349659-05:00 (in 299.984679 seconds)
+2025-05-13 21:14:33,365 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:19:33 -05)" (scheduled at 2025-05-13 21:14:33.349659-05:00)
+2025-05-13 21:14:33,366 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:14:33,410 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:19:33 -05)" executed successfully
+2025-05-13 21:19:33,358 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:19:33,361 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:24:33.349659-05:00 (in 299.988312 seconds)
+2025-05-13 21:19:33,362 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:24:33 -05)" (scheduled at 2025-05-13 21:19:33.349659-05:00)
+2025-05-13 21:19:33,364 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:19:33,393 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:24:33 -05)" executed successfully
+2025-05-13 21:25:59,794 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:25:59,797 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:29:33.349659-05:00 (in 213.551900 seconds)
+2025-05-13 21:25:59,798 - apscheduler.executors.default - WARNING - Run time of job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:29:33 -05)" was missed by 0:01:26.448923
+2025-05-13 21:29:33,353 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:29:33,353 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:34:33.349659-05:00 (in 299.995856 seconds)
+2025-05-13 21:29:33,353 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:34:33 -05)" (scheduled at 2025-05-13 21:29:33.349659-05:00)
+2025-05-13 21:29:33,354 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:29:33,386 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:34:33 -05)" executed successfully
+2025-05-13 21:34:33,352 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:34:33,353 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:39:33.349659-05:00 (in 299.996154 seconds)
+2025-05-13 21:34:33,353 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:39:33 -05)" (scheduled at 2025-05-13 21:34:33.349659-05:00)
+2025-05-13 21:34:33,354 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:34:33,391 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:39:33 -05)" executed successfully
+2025-05-13 21:39:33,364 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:39:33,368 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:44:33.349659-05:00 (in 299.981657 seconds)
+2025-05-13 21:39:33,369 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:44:33 -05)" (scheduled at 2025-05-13 21:39:33.349659-05:00)
+2025-05-13 21:39:33,372 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:39:33,417 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:44:33 -05)" executed successfully
+2025-05-13 21:44:33,347 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:44:33,350 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:49:33.349659-05:00 (in 299.998883 seconds)
+2025-05-13 21:44:33,351 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:49:33 -05)" (scheduled at 2025-05-13 21:44:33.349659-05:00)
+2025-05-13 21:44:33,353 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:44:33,393 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:49:33 -05)" executed successfully
+2025-05-13 21:49:33,356 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 21:49:33,357 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 21:54:33.349659-05:00 (in 299.992673 seconds)
+2025-05-13 21:49:33,357 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:54:33 -05)" (scheduled at 2025-05-13 21:49:33.349659-05:00)
+2025-05-13 21:49:33,358 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 21:49:33,377 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 21:54:33 -05)" executed successfully
+2025-05-13 22:00:01,906 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-13 22:00:01,907 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-13 22:00:01,908 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-13 22:00:01,936 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-13 22:00:02,204 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-13 22:00:02,207 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-13 22:00:02,207 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-13 22:00:02,231 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-13 22:00:02,234 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-13 22:00:02,235 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-13 22:00:02,235 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:00:02,236 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-13 22:00:02,236 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:05:02.231824-05:00 (in 299.995395 seconds)
+2025-05-13 22:05:02,240 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:05:02,242 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:10:02 -05)" (scheduled at 2025-05-13 22:05:02.231824-05:00)
+2025-05-13 22:05:02,242 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:10:02.231824-05:00 (in 299.989360 seconds)
+2025-05-13 22:05:02,243 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 22:05:02,388 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:10:02 -05)" executed successfully
+2025-05-13 22:10:02,241 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:10:02,242 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:15:02.231824-05:00 (in 299.989207 seconds)
+2025-05-13 22:10:02,242 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:15:02 -05)" (scheduled at 2025-05-13 22:10:02.231824-05:00)
+2025-05-13 22:10:02,243 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 22:10:02,255 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:15:02 -05)" executed successfully
+2025-05-13 22:15:02,246 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:15:02,246 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:20:02.231824-05:00 (in 299.985067 seconds)
+2025-05-13 22:15:02,247 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:20:02 -05)" (scheduled at 2025-05-13 22:15:02.231824-05:00)
+2025-05-13 22:15:02,247 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 22:15:02,257 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:20:02 -05)" executed successfully
+2025-05-13 22:20:02,242 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:20:02,243 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:25:02.231824-05:00 (in 299.988315 seconds)
+2025-05-13 22:20:02,243 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:25:02 -05)" (scheduled at 2025-05-13 22:20:02.231824-05:00)
+2025-05-13 22:20:02,244 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 22:20:02,255 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:25:02 -05)" executed successfully
+2025-05-13 22:30:09,127 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-13 22:30:09,134 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-13 22:30:09,137 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-13 22:30:09,193 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-13 22:30:09,775 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-13 22:30:09,778 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-13 22:30:09,778 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-13 22:30:09,821 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-13 22:30:09,842 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-13 22:30:09,843 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-13 22:30:09,844 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:30:09,844 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-13 22:30:09,844 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:35:09.821588-05:00 (in 299.976732 seconds)
+2025-05-13 22:35:09,840 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:35:09,841 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:40:09 -05)" (scheduled at 2025-05-13 22:35:09.821588-05:00)
+2025-05-13 22:35:09,841 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:40:09.821588-05:00 (in 299.979674 seconds)
+2025-05-13 22:35:09,842 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 22:35:10,357 - apscheduler.executors.default - ERROR - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:40:09 -05)" raised an exception
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.ProgrammingError: ('42S22', "[42S22] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Invalid column name 'motivoCancelacion'. (207) (SQLExecDirectW); [42S22] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Statement(s) could not be prepared. (8180)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\main.py", line 56, in <lambda>
+    scheduler.add_job(lambda: asyncio.run(enviar_recordatorios()), 'interval', minutes=5)
+                              ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\frand\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\frand\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\frand\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\servicios\enviarRecordatorios.py", line 40, in enviar_recordatorios
+    citas = obtener_citas_para_recordatorio(db)
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\servicios\enviarRecordatorios.py", line 22, in obtener_citas_para_recordatorio
+    pendientes = db.query(Cita).filter(Cita.estado == "pendiente", Cita.recordatorioEnviado == False).all()
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (pyodbc.ProgrammingError) ('42S22', "[42S22] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Invalid column name 'motivoCancelacion'. (207) (SQLExecDirectW); [42S22] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Statement(s) could not be prepared. (8180)")
+[SQL: SELECT [Cita].[idCita] AS [Cita_idCita], [Cita].[idUsuario] AS [Cita_idUsuario], [Cita].[idVeterinario] AS [Cita_idVeterinario], [Cita].[idServicio] AS [Cita_idServicio], [Cita].[idMascota] AS [Cita_idMascota], [Cita].[fechaHora] AS [Cita_fechaHora], [Cita].[fotoAnimal] AS [Cita_fotoAnimal], [Cita].[notasAdicionales] AS [Cita_notasAdicionales], [Cita].estado AS [Cita_estado], [Cita].[recordatorioEnviado] AS [Cita_recordatorioEnviado], [Cita].[motivoCancelacion] AS [Cita_motivoCancelacion] 
+FROM [Cita] 
+WHERE [Cita].estado = ? AND [Cita].[recordatorioEnviado] = 0]
+[parameters: ('pendiente',)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-05-13 22:37:30,130 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-13 22:37:30,133 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-13 22:37:30,134 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-13 22:37:30,146 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-13 22:37:30,296 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-13 22:37:30,300 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-13 22:37:30,302 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-13 22:37:30,321 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-13 22:37:30,332 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-13 22:37:30,333 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-13 22:37:30,335 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:37:30,335 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-13 22:37:30,336 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:42:30.321038-05:00 (in 299.985010 seconds)
+2025-05-13 22:42:30,330 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-13 22:42:30,333 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:47:30 -05)" (scheduled at 2025-05-13 22:42:30.321038-05:00)
+2025-05-13 22:42:30,333 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:47:30.321038-05:00 (in 299.987477 seconds)
+2025-05-13 22:42:30,334 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-13 22:42:30,636 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:47:30 -05)" executed successfully

@@ -36,4 +36,9 @@ class CitaDto(BaseModel):
     fechaHora: datetime
     notasAdicionales: Optional[str] = None
     estado: str
+    motivoCancelacion: Optional[str] = None
+
+# DTO para cancelar una cita con motivo
+class CitaCancelarDto(BaseModel):
+    motivoCancelacion: str
 

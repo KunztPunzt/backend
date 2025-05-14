@@ -5,6 +5,7 @@ import uuid
 import os
 import shutil
 from datetime import date
+from typing import List
 
 from backend.dtos.mascotaDto import MascotaCrearDto, MascotaDto
 from backend.modelos.mascota import Mascota
@@ -64,3 +65,21 @@ def subir_mascota(
     db.refresh(nueva_mascota)
 
     return nueva_mascota
+
+@router.get("/mis-mascotas", response_model=List[MascotaDto])
+def listar_mis_mascotas(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    """
+    Obtiene la lista de mascotas registradas por el usuario actual.
+    Solo usuarios con rol 'cliente' pueden acceder a sus mascotas.
+    """
+    if current_user.rol != "cliente":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Solo usuarios con rol 'cliente' pueden ver sus mascotas."
+        )
+    
+    mascotas = db.query(Mascota).filter(Mascota.idUsuario == current_user.idUser).all()
+    return mascotas
