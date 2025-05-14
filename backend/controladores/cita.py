@@ -1,0 +1,136 @@
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from backend.dtos.citaDto import CitaCrearDto, CitaDto, TipoServicio, CitaActualizarDto
+from backend.modelos.cita import Cita
+from backend.modelos.mascota import Mascota
+from backend.modelos.servicio import Servicio
+from backend.modelos.veterinario import Veterinario
+from backend.utilidades.dependencias import get_db, get_current_user
+
+router = APIRouter(prefix="/citas", tags=["Citas"])
+
+@router.post("/", response_model=CitaDto, status_code=status.HTTP_201_CREATED)
+def crear_cita(
+    cita_in: CitaCrearDto,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    # 1) Sólo clientes
+    if current_user.rol != "cliente":
+        raise HTTPException(403, "Solo clientes pueden solicitar citas.")
+
+    # 2) Mascota válida y propia
+    mascota = db.get(Mascota, cita_in.idMascota)
+    if not mascota or mascota.idUsuario != current_user.idUser:
+        raise HTTPException(404, "Mascota no encontrada o no te pertenece.")
+
+    # 3) Servicio válido (buscar por nombre)
+    servicio = db.query(Servicio).filter(Servicio.nombre == cita_in.tipoServicio.value).first()
+    if not servicio:
+        raise HTTPException(404, "Servicio no encontrado.")
+
+    # 4) Validar veterinario si se proporciona
+    id_veterinario = cita_in.idVeterinario
+    veterinario = None
+    if id_veterinario is not None:
+        veterinario = db.get(Veterinario, id_veterinario)
+        if not veterinario:
+            raise HTTPException(404, "Veterinario no encontrado.")
+
+    # 5) Crear la cita
+    nueva = Cita(
+        idMascota = cita_in.idMascota,
+        idServicio = servicio.idServicio,
+        fechaHora = cita_in.fechaHora,
+        notasAdicionales = cita_in.notasAdicionales,
+        estado = "pendiente",
+        idUsuario = current_user.idUser,
+        idVeterinario = id_veterinario
+    )
+    db.add(nueva)
+    db.commit()
+    db.refresh(nueva)
+
+    servicio = db.get(Servicio, nueva.idServicio)
+    tipo_servicio = TipoServicio(servicio.nombre)
+    return CitaDto(
+        idCita=nueva.idCita,
+        idMascota=nueva.idMascota,
+        tipoServicio=tipo_servicio,
+        fechaHora=nueva.fechaHora,
+        notasAdicionales=nueva.notasAdicionales,
+        estado=nueva.estado
+    )
+
+@router.put("/{idCita}", response_model=CitaDto)
+def modificar_cita(
+    idCita: int,
+    cita_update: CitaActualizarDto,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    # Buscar la cita
+    cita = db.get(Cita, idCita)
+    if not cita:
+        raise HTTPException(404, "Cita no encontrada.")
+
+    # Solo el cliente dueño puede modificar
+    if current_user.rol != "cliente" or cita.idUsuario != current_user.idUser:
+        raise HTTPException(403, "No tienes permiso para modificar esta cita.")
+
+    # Actualizar campos permitidos
+    if cita_update.fechaHora is not None:
+        cita.fechaHora = cita_update.fechaHora
+    if cita_update.tipoServicio is not None:
+        servicio = db.query(Servicio).filter(Servicio.nombre == cita_update.tipoServicio.value).first()
+        if not servicio:
+            raise HTTPException(404, "Servicio no encontrado.")
+        cita.idServicio = servicio.idServicio
+    if cita_update.notasAdicionales is not None:
+        cita.notasAdicionales = cita_update.notasAdicionales
+    if cita_update.idVeterinario is not None:
+        veterinario = db.get(Veterinario, cita_update.idVeterinario)
+        if not veterinario:
+            raise HTTPException(404, "Veterinario no encontrado.")
+        cita.idVeterinario = cita_update.idVeterinario
+
+    db.commit()
+    db.refresh(cita)
+
+    # Obtener el tipo de servicio actualizado
+    servicio = db.get(Servicio, cita.idServicio)
+    tipo_servicio = TipoServicio(servicio.nombre)
+
+    return CitaDto(
+        idCita=cita.idCita,
+        idMascota=cita.idMascota,
+        tipoServicio=tipo_servicio,
+        fechaHora=cita.fechaHora,
+        notasAdicionales=cita.notasAdicionales,
+        estado=cita.estado
+    )
+
+@router.delete("/{idCita}", response_model=CitaDto)
+def cancelar_cita(
+    idCita: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    cita = db.get(Cita, idCita)
+    if not cita:
+        raise HTTPException(404, "Cita no encontrada.")
+    if current_user.rol != "cliente" or cita.idUsuario != current_user.idUser:
+        raise HTTPException(403, "No tienes permiso para cancelar esta cita.")
+    cita.estado = "cancelada"
+    db.commit()
+    db.refresh(cita)
+    servicio = db.get(Servicio, cita.idServicio)
+    tipo_servicio = TipoServicio(servicio.nombre)
+    return CitaDto(
+        idCita=cita.idCita,
+        idMascota=cita.idMascota,
+        tipoServicio=tipo_servicio,
+        fechaHora=cita.fechaHora,
+        notasAdicionales=cita.notasAdicionales,
+        estado=cita.estado
+    )
