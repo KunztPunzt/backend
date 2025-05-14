@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from backend.dtos.citaDto import CitaCrearDto, CitaDto, TipoServicio, CitaActualizarDto
+from backend.dtos.citaDto import CitaCrearDto, CitaDto, TipoServicio, CitaActualizarDto, CitaCancelarDto
 from backend.modelos.cita import Cita
 from backend.modelos.mascota import Mascota
 from backend.modelos.servicio import Servicio
@@ -113,6 +113,7 @@ def modificar_cita(
 @router.delete("/{idCita}", response_model=CitaDto)
 def cancelar_cita(
     idCita: int,
+    cancelacion: CitaCancelarDto,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
@@ -122,6 +123,7 @@ def cancelar_cita(
     if current_user.rol != "cliente" or cita.idUsuario != current_user.idUser:
         raise HTTPException(403, "No tienes permiso para cancelar esta cita.")
     cita.estado = "cancelada"
+    cita.motivoCancelacion = cancelacion.motivoCancelacion
     db.commit()
     db.refresh(cita)
     servicio = db.get(Servicio, cita.idServicio)
@@ -132,5 +134,6 @@ def cancelar_cita(
         tipoServicio=tipo_servicio,
         fechaHora=cita.fechaHora,
         notasAdicionales=cita.notasAdicionales,
-        estado=cita.estado
+        estado=cita.estado,
+        motivoCancelacion=cita.motivoCancelacion
     )

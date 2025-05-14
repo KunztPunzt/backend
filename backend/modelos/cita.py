@@ -17,6 +17,7 @@ class Cita(Base):
     notasAdicionales = Column(NVARCHAR(500), nullable=True)
     estado = Column(NVARCHAR(20), nullable=False, default="pendiente")
     recordatorioEnviado = Column(Boolean, nullable=False, default=False)
+    motivoCancelacion = Column(NVARCHAR(500), nullable=True)
     
 
     # Relaciones ORM
