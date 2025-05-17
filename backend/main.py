@@ -24,6 +24,7 @@ from backend.controladores import usuarioRegistro, usuarioIngreso
 from backend.controladores.mascota import router as mascota_router
 from backend.controladores.cita import router as cita_router
 from backend.controladores.cambioContrasena import router as cambio_contrasena_router
+from backend.controladores.auditoria import router as auditoria_router
 
 # Conexión a la BD y creación de tablas
 from backend.servicios.baseDatos import Base, engine
@@ -71,10 +72,14 @@ app.include_router(
     prefix="/mascotas",
     tags=["Mascotas"],
 )
+
 # Router Citas
 app.include_router(cita_router, prefix="/citas", tags=["Citas"])
 
 # Router de cambio de contraseña
 app.include_router(cambio_contrasena_router)
+
+# Router de auditoría
+app.include_router(auditoria_router, prefix="/admin", tags=["Auditoría"])
 
 logger.info("Aplicación configurada y lista para recibir peticiones")

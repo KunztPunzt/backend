@@ -137,3 +137,31 @@ def cancelar_cita(
         estado=cita.estado,
         motivoCancelacion=cita.motivoCancelacion
     )
+
+@router.put("/{idCita}/confirmar", response_model=CitaDto)
+def confirmar_cita(
+    idCita: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    cita = db.get(Cita, idCita)
+    if not cita:
+        raise HTTPException(404, "Cita no encontrada.")
+    if current_user.rol != "cliente" or cita.idUsuario != current_user.idUser:
+        raise HTTPException(403, "No tienes permiso para confirmar esta cita.")
+    if cita.estado != "pendiente":
+        raise HTTPException(400, "Solo se pueden confirmar citas pendientes.")
+    cita.estado = "confirmada"
+    db.commit()
+    db.refresh(cita)
+    servicio = db.get(Servicio, cita.idServicio)
+    tipo_servicio = TipoServicio(servicio.nombre)
+    return CitaDto(
+        idCita=cita.idCita,
+        idMascota=cita.idMascota,
+        tipoServicio=tipo_servicio,
+        fechaHora=cita.fechaHora,
+        notasAdicionales=cita.notasAdicionales,
+        estado=cita.estado,
+        motivoCancelacion=cita.motivoCancelacion
+    )

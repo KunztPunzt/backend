@@ -60,7 +60,9 @@ async def get_current_user(request: Request = None, token: str = Depends(oauth2_
             logger.warning("Token JWT sin campo 'sub'")
             raise credentials_exc
         
-        logger.debug(f"Token decodificado exitosamente para: {email}")
+        # Extraer rol del token (nuevo)
+        rol_token = payload.get("rol")
+        logger.debug(f"Token decodificado exitosamente para: {email}, rol: {rol_token}")
     except JWTError as e:
         logger.error(f"Error al decodificar token JWT: {str(e)}")
         raise credentials_exc
@@ -85,7 +87,12 @@ async def get_current_user(request: Request = None, token: str = Depends(oauth2_
                 detail="Cuenta no activa. Por favor active su cuenta primero.",
             )
         
-        logger.debug(f"Usuario autenticado exitosamente: {email}")
+        # Verificar que el rol en el token coincida con el rol en la base de datos (seguridad adicional)
+        if rol_token and user.rol != rol_token:
+            logger.warning(f"Discrepancia de rol para usuario {email}: token={rol_token}, db={user.rol}")
+            # Si hay discrepancia, priorizar el rol de la base de datos para mantener seguridad
+            
+        logger.debug(f"Usuario autenticado exitosamente: {email}, rol: {user.rol}")
         return user
     except HTTPException:
         # Re-lanzar excepciones HTTP
