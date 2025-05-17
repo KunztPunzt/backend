@@ -18,4 +18,5 @@ class Usuario(Base):
     mascotas = relationship("Mascota", back_populates="usuario", cascade="all, delete-orphan")
     veterinario = relationship("Veterinario", back_populates="usuario", cascade="all, delete-orphan", uselist=False)
     citas = relationship("Cita",back_populates="usuario", cascade="all, delete-orphan")
+    auditorias = relationship("Auditoria", back_populates="usuario")
 
