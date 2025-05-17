@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from backend.dtos.citaDto import CitaCrearDto, CitaDto, TipoServicio, CitaActualizarDto, CitaCancelarDto
+from backend.dtos.veterinarioDto import VeterinarioDto
 from backend.modelos.cita import Cita
 from backend.modelos.mascota import Mascota
 from backend.modelos.servicio import Servicio
 from backend.modelos.veterinario import Veterinario
 from backend.utilidades.dependencias import get_db, get_current_user
+from typing import List
 
 router = APIRouter(prefix="/citas", tags=["Citas"])
 
@@ -165,3 +167,29 @@ def confirmar_cita(
         estado=cita.estado,
         motivoCancelacion=cita.motivoCancelacion
     )
+
+@router.get("/veterinarios", response_model=List[VeterinarioDto])
+def obtener_veterinarios_disponibles(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    """
+    Obtiene la lista de todos los veterinarios disponibles en el sistema.
+    """
+    veterinarios = db.query(Veterinario).all()
+    
+    # Transformar los resultados para incluir el nombre del usuario
+    veterinarios_dto = []
+    for vet in veterinarios:
+        veterinarios_dto.append(
+            VeterinarioDto(
+                idVeterinario=vet.idVeterinario,
+                nombre=f"{vet.usuario.nombre} {vet.usuario.apellidos}",
+                especialidad=vet.especialidad,
+                añosExperiencia=vet.añosExperiencia,
+                estadoLicencia=vet.estadoLicencia,
+                almaMater=vet.almaMater
+            )
+        )
+    
+    return veterinarios_dto
