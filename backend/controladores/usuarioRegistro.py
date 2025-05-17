@@ -91,3 +91,7 @@ def _generar_respuesta_error(request: Request, mensaje: str, codigo: int):
         return HTMLResponse(f"<h2>{mensaje}</h2>", status_code=codigo)
     else:
         return JSONResponse({"error": mensaje}, status_code=codigo)
+    
+    from fastapi import FastAPI, WebSocket
+
+

@@ -65,9 +65,12 @@ async def login(
                 detail="Cuenta no activa. Por favor active su cuenta primero.",
             )
         
-        # Generar token JWT
-        access_token = create_access_token({"sub": form_data.username})
-        logger.info(f"Login exitoso para el usuario {form_data.username}")
+        # Generar token JWT con email y rol
+        access_token = create_access_token({
+            "sub": form_data.username,
+            "rol": usuario.rol
+        })
+        logger.info(f"Login exitoso para el usuario {form_data.username}, rol: {usuario.rol}")
         
         # Devolver token
         return {"access_token": access_token, "token_type": "bearer"}
