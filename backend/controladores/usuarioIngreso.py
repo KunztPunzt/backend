@@ -15,9 +15,15 @@ import logging
 # Configurar logging
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(
+    tags=["Autenticación"]
+)
 
-@router.post("/token", response_model=Token)
+@router.post(
+    "/token", 
+    response_model=Token,
+    summary="Iniciar Sesión"
+)
 async def login(
     request: Request,
     form_data: OAuth2PasswordRequestForm = Depends(),
@@ -57,20 +63,20 @@ async def login(
                 headers={"WWW-Authenticate": "Bearer"},
             )
         
-        # Verificar que la cuenta esté activa
-        if usuario.estadoCuenta != "activo":
-            logger.warning(f"Intento de login con cuenta no activa: {form_data.username}")
+        # Verificar que la cuenta esté activa (en minúsculas)
+        if usuario.estadoCuenta.lower() != "activo":
+            logger.warning(f"Intento de login con cuenta no activa: {form_data.username}, estado: {usuario.estadoCuenta}")
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Cuenta no activa. Por favor active su cuenta primero.",
             )
         
-        # Generar token JWT con email y rol
+        # Generar token JWT con email y rol (en minúsculas)
         access_token = create_access_token({
             "sub": form_data.username,
-            "rol": usuario.rol
+            "rol": usuario.rol.lower() # Asegurar que el rol esté en minúsculas
         })
-        logger.info(f"Login exitoso para el usuario {form_data.username}, rol: {usuario.rol}")
+        logger.info(f"Login exitoso para el usuario {form_data.username}, rol: {usuario.rol.lower()}")
         
         # Devolver token
         return {"access_token": access_token, "token_type": "bearer"}
@@ -89,7 +95,10 @@ async def login(
         )
 
 
-@router.get("/perfil")
+@router.get(
+    "/perfil",
+    summary="Ver Perfil de Usuario"
+)
 def leer_perfil(current_user=Depends(get_current_user)):
     """
     Devuelve la información del perfil del usuario autenticado.
@@ -104,7 +113,7 @@ def leer_perfil(current_user=Depends(get_current_user)):
         return {
             "email": current_user.email,
             "nombre": current_user.nombre,
-            "rol": current_user.rol
+            "rol": current_user.rol # El rol ya debería estar en minúsculas desde el token
         }
     except Exception as e:
         logger.error(f"Error al obtener perfil: {str(e)}")
