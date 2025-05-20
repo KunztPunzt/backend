@@ -14,7 +14,12 @@ from backend.servicios.auditoria import ServicioAuditoria
 
 router = APIRouter(prefix="/mascotas", tags=["Mascotas"])
 
-@router.post("/", response_model=MascotaDto, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/", 
+    response_model=MascotaDto, 
+    status_code=status.HTTP_201_CREATED,
+    summary="Registrar Nueva Mascota"
+)
 def subir_mascota(
     request: Request,
     nombre: str = Form(...),
@@ -28,7 +33,12 @@ def subir_mascota(
     current_user=Depends(get_current_user)
 ):
     """
-    Permite a un usuario con rol 'cliente' subir una nueva mascota junto con su foto.
+    Permite a un usuario con rol 'cliente' registrar una nueva mascota.
+    
+    - Se requiere cargar una foto de la mascota
+    - Se registran datos básicos como nombre, especie, raza
+    - Opcionalmente se puede incluir edad, fecha de nacimiento y notas
+    - La acción queda registrada en auditoría
     """
     # Validar que el usuario sea cliente
     if current_user.rol != "cliente":
@@ -91,14 +101,20 @@ def subir_mascota(
 
     return nueva_mascota
 
-@router.get("/mis-mascotas", response_model=List[MascotaDto])
+@router.get(
+    "/mis-mascotas", 
+    response_model=List[MascotaDto],
+    summary="Listar Mis Mascotas"
+)
 def listar_mis_mascotas(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
     """
     Obtiene la lista de mascotas registradas por el usuario actual.
-    Solo usuarios con rol 'cliente' pueden acceder a sus mascotas.
+    
+    - Solo usuarios con rol 'cliente' pueden acceder a sus mascotas
+    - Se devuelven todas las mascotas asociadas al usuario autenticado
     """
     if current_user.rol != "cliente":
         raise HTTPException(
@@ -109,7 +125,11 @@ def listar_mis_mascotas(
     mascotas = db.query(Mascota).filter(Mascota.idUsuario == current_user.idUser).all()
     return mascotas
 
-@router.put("/{mascota_id}", response_model=MascotaDto)
+@router.put(
+    "/{mascota_id}", 
+    response_model=MascotaDto,
+    summary="Actualizar Mascota Existente"
+)
 def actualizar_mascota(
     request: Request,
     mascota_id: int,
@@ -125,6 +145,11 @@ def actualizar_mascota(
 ):
     """
     Permite actualizar los datos de una mascota existente.
+    
+    - Solo el cliente propietario puede actualizar su mascota
+    - Se pueden modificar todos los datos, incluida la foto
+    - La foto anterior se elimina si se carga una nueva
+    - La acción queda registrada en auditoría
     """
     # Validar que el usuario sea cliente
     if current_user.rol != "cliente":

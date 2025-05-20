@@ -18,18 +18,37 @@ import logging
 # Configurar logging
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(
+    tags=["Usuarios"]
+)
 
 # Registro Usuario
 
-@router.post("/registro", response_model=UsuarioRespuesta)
+@router.post(
+    "/registro", 
+    response_model=UsuarioRespuesta,
+    summary="Registrar Nuevo Usuario"
+)
 async def registrar_usuario(datos_usuario: UsuarioCrear, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    """
+    Registra un nuevo usuario en el sistema.
+    
+    - Valida que el correo electrónico no esté ya registrado
+    - Envía un correo de activación al usuario
+    - Devuelve los datos del usuario creado
+    """
     logger.info(f"Iniciando registro de usuario: {datos_usuario.email}")
     usuario_existente = repositorio_usuario.obtener_por_email(db, datos_usuario.email)
     if usuario_existente:
         logger.warning(f"Intento de registro con email ya existente: {datos_usuario.email}")
         raise HTTPException(status_code=400, detail="El correo ya está en uso")
     
+    # Asegurar que el rol se guarde en minúsculas si se proporciona
+    if datos_usuario.rol:
+        datos_usuario.rol = datos_usuario.rol.lower()
+    else:
+        datos_usuario.rol = "cliente" # Rol por defecto en minúsculas
+        
     nuevo_usuario = repositorio_usuario.crear_usuario(db, datos_usuario)
     background_tasks.add_task(
         send_activation_email,
@@ -39,11 +58,17 @@ async def registrar_usuario(datos_usuario: UsuarioCrear, background_tasks: Backg
     logger.info(f"Usuario registrado correctamente: {datos_usuario.email}. Se ha enviado correo de activación.")
     return nuevo_usuario
 
-@router.get("/activar")
+@router.get(
+    "/activar",
+    summary="Activar Cuenta de Usuario"
+)
 def activar_cuenta(request: Request, token: str = Query(...), db: Session = Depends(get_db)):
     """
     Activa la cuenta de usuario mediante token de validación.
-    Puede responder en formato JSON o HTML dependiendo del Accept header.
+    
+    - Valida el token proporcionado
+    - Activa la cuenta si el token es válido
+    - Puede responder en formato JSON o HTML dependiendo del Accept header
     """
     logger.debug(f"Procesando activación de cuenta con token")
     
@@ -64,7 +89,7 @@ def activar_cuenta(request: Request, token: str = Query(...), db: Session = Depe
         logger.warning(f"Token de activación no coincide para email: {email}")
         return _generar_respuesta_error(request, "Token de activación no coincide", 400)
     
-    usuario.estadoCuenta = "activo"
+    usuario.estadoCuenta = "activo" # Estado en minúsculas
     usuario.tokenActivacion = None
     db.commit()
     logger.info(f"Cuenta activada correctamente para: {email}")
