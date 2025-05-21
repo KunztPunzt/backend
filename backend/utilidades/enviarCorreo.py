@@ -12,8 +12,8 @@ conf = ConnectionConfig(
     MAIL_SSL_TLS=False,
     USE_CREDENTIALS=True,
     VALIDATE_CERTS=True,
-    SUPPRESS_SEND=False,  # permite realmente enviar al sandbox
-    MAIL_DEBUG=True
+    TEMPLATE_FOLDER=None,
+    SUPPRESS_SEND=False
 )
 
 fm = FastMail(conf)
