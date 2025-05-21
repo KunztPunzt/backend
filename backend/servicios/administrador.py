@@ -5,7 +5,10 @@ import secrets
 import os
 import uuid
 import shutil
-from fastapi import UploadFile
+from fastapi import UploadFile, HTTPException, status
+from datetime import datetime, timedelta
+import jwt
+from fastapi import BackgroundTasks
 
 from backend.modelos.usuario import Usuario
 from backend.modelos.veterinario import Veterinario
@@ -18,6 +21,8 @@ from backend.dtos.administrador import (
     AdministradorResponse
 )
 from backend.utilidades.seguridad import hash_password
+from backend.utilidades.enviarCorreo import send_activation_email
+from backend.utilidades.config import settings
 
 class ServicioAdministrador:
     def __init__(self, db: Session):
@@ -209,8 +214,13 @@ class ServicioAdministrador:
         # URL para la base de datos
         url_diploma = f"/static/documentos/diplomas/{nombre_archivo}"
 
-        # Generar token de activación
-        token_activacion = secrets.token_urlsafe(32)
+        # Generar token JWT con expiración
+        expire = datetime.utcnow() + timedelta(hours=settings.jwt_expiration_hours)
+        token = jwt.encode(
+            {"sub": email, "exp": expire},
+            settings.secret_key,
+            algorithm=settings.jwt_algorithm
+        )
 
         # Crear usuario veterinario
         db_usuario = Usuario(
@@ -220,7 +230,7 @@ class ServicioAdministrador:
             password=hash_password(password),
             rol="veterinario",
             estadoCuenta="pendiente",
-            tokenActivacion=token_activacion
+            tokenActivacion=token
         )
         self.db.add(db_usuario)
         self.db.flush()  # Para obtener el ID del usuario
@@ -237,5 +247,115 @@ class ServicioAdministrador:
         self.db.add(db_veterinario)
         self.db.commit()
         self.db.refresh(db_usuario)
+
+        # Enviar correo de activación
+        background_tasks = BackgroundTasks()
+        background_tasks.add_task(
+            send_activation_email,
+            db_usuario.email,
+            db_usuario.tokenActivacion
+        )
+
+        return db_usuario 
+
+    def validarDiplomaVeterinario(
+        self,
+        veterinario_id: int,
+        es_valido: bool,
+        observaciones: Optional[str] = None
+    ) -> Veterinario:
+        """
+        Valida el diploma de un veterinario.
+        
+        Args:
+            veterinario_id: ID del veterinario
+            es_valido: True si el diploma es válido, False si no lo es
+            observaciones: Observaciones opcionales sobre la validación
+            
+        Returns:
+            Información actualizada del veterinario
+        """
+        veterinario = self.db.query(Veterinario).filter(
+            Veterinario.idVeterinario == veterinario_id
+        ).first()
+        
+        if not veterinario:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Veterinario no encontrado"
+            )
+            
+        # Actualizar estado de la licencia
+        veterinario.estadoLicencia = "aprobada" if es_valido else "rechazada"
+        veterinario.observacionesDiploma = observaciones
+        veterinario.fechaValidacion = datetime.utcnow()
+        
+        # Si el diploma es válido, activar la cuenta del veterinario
+        if es_valido:
+            usuario = self.db.query(Usuario).filter(
+                Usuario.idUser == veterinario.idUsuario
+            ).first()
+            if usuario:
+                usuario.estadoCuenta = "activo"
+                usuario.tokenActivacion = None
+        
+        self.db.commit()
+        self.db.refresh(veterinario)
+        
+        return veterinario 
+
+    def registrarAsistente(
+        self,
+        nombre: str,
+        apellidos: str,
+        email: str,
+        password: str
+    ) -> Optional[Usuario]:
+        """
+        Registra un nuevo asistente en el sistema.
+        
+        Args:
+            nombre: Nombre del asistente
+            apellidos: Apellidos del asistente
+            email: Email del asistente
+            password: Contraseña del asistente
+            
+        Returns:
+            Usuario creado o None si el email ya existe
+        """
+        # Verificar si el email ya existe
+        if self.db.query(Usuario).filter(Usuario.email == email).first():
+            return None
+
+        # Generar token JWT con expiración
+        expire = datetime.utcnow() + timedelta(hours=settings.jwt_expiration_hours)
+        token = jwt.encode(
+            {"sub": email, "exp": expire},
+            settings.secret_key,
+            algorithm=settings.jwt_algorithm
+        )
+
+        # Crear usuario asistente
+        db_usuario = Usuario(
+            nombre=nombre,
+            apellidos=apellidos,
+            email=email,
+            password=hash_password(password),
+            rol="asistente",
+            estadoCuenta="pendiente",
+            tokenActivacion=token
+        )
+        
+        self.db.add(db_usuario)
+        self.db.commit()
+        self.db.refresh(db_usuario)
+
+        # Enviar correo de activación
+        background_tasks = BackgroundTasks()
+        background_tasks.add_task(
+            send_activation_email,
+            db_usuario.email,
+            db_usuario.tokenActivacion
+        )
 
         return db_usuario 
