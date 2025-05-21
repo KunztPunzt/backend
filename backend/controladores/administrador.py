@@ -5,9 +5,10 @@ from typing import List, Optional
 from backend.servicios.baseDatos import get_db
 from backend.servicios.administrador import ServicioAdministrador
 from backend.dtos.administrador import (
-    AdministradorCreate,
     EstadisticasSistema,
-    VeterinarioRegistro
+    VeterinarioRegistro,
+    UsuarioUpdate,
+    UsuarioResponse
 )
 from backend.utilidades.seguridad import obtenerUsuarioActual
 from backend.utilidades.enviarCorreo import send_activation_email
@@ -17,30 +18,92 @@ router = APIRouter(
     tags=["Administrador"]
 )
 
-@router.post(
-    "/", 
-    response_model=AdministradorCreate, 
-    status_code=status.HTTP_201_CREATED, 
-    name="Crear Nuevo Administrador",
-    summary="Crear Nuevo Administrador"
+@router.get(
+    "/usuarios", 
+    response_model=List[UsuarioResponse],
+    name="Listar Usuarios",
+    summary="Listar Usuarios"
 )
-def crearNuevoAdministrador(
-    admin: AdministradorCreate,
+def listarUsuarios(
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     usuarioActual: dict = Depends(obtenerUsuarioActual)
 ):
     """
-    Crea un nuevo administrador en el sistema.
-    Solo los administradores existentes pueden crear nuevos administradores.
+    Lista todos los usuarios del sistema.
+    Solo los administradores pueden ver esta lista.
     """
     if usuarioActual["rol"] != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tiene permisos para crear administradores"
+            detail="No tiene permisos para ver usuarios"
         )
     
     servicio = ServicioAdministrador(db)
-    return servicio.crearAdministrador(admin)
+    return servicio.listarUsuarios(skip=skip, limit=limit)
+
+@router.delete(
+    "/usuarios/{usuario_id}",
+    status_code=status.HTTP_200_OK,
+    name="Eliminar Usuario",
+    summary="Eliminar Usuario"
+)
+def eliminarUsuario(
+    usuario_id: int,
+    db: Session = Depends(get_db),
+    usuarioActual: dict = Depends(obtenerUsuarioActual)
+):
+    """
+    Elimina un usuario del sistema.
+    Solo los administradores pueden eliminar usuarios.
+    """
+    if usuarioActual["rol"] != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tiene permisos para eliminar usuarios"
+        )
+    
+    servicio = ServicioAdministrador(db)
+    if not servicio.eliminarUsuario(usuario_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado"
+        )
+    
+    return {"mensaje": "Usuario eliminado exitosamente"}
+
+@router.put(
+    "/usuarios/{usuario_id}",
+    response_model=UsuarioResponse,
+    name="Modificar Usuario",
+    summary="Modificar Usuario"
+)
+def modificarUsuario(
+    usuario_id: int,
+    usuario: UsuarioUpdate,
+    db: Session = Depends(get_db),
+    usuarioActual: dict = Depends(obtenerUsuarioActual)
+):
+    """
+    Modifica la información de un usuario.
+    Solo los administradores pueden modificar usuarios.
+    """
+    if usuarioActual["rol"] != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tiene permisos para modificar usuarios"
+        )
+    
+    servicio = ServicioAdministrador(db)
+    usuario_actualizado = servicio.modificarUsuario(usuario_id, usuario)
+    if not usuario_actualizado:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado"
+        )
+    
+    return usuario_actualizado
 
 @router.get(
     "/estadisticas", 
