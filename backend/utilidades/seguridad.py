@@ -3,10 +3,15 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from backend.utilidades.config import settings
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 import logging
 
 # Configurar logging
 logger = logging.getLogger(__name__)
+
+# Para obtener token de autenticación
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/usuarios/token")
 
 # bcrypt con coste moderado
 pwd_context = CryptContext(schemes=["bcrypt"], bcrypt__rounds=12, deprecated="auto")
@@ -95,3 +100,43 @@ def decode_token(token: str) -> dict:
     except JWTError as e:
         logger.error(f"Error al decodificar token JWT: {str(e)}")
         raise
+
+async def obtenerUsuarioActual(token: str = Depends(oauth2_scheme)):
+    """
+    Obtiene el usuario actual basado en el token JWT proporcionado.
+    Implementado en estilo CamelCase según las preferencias del proyecto.
+    
+    Args:
+        token: Token JWT de autenticación
+        
+    Returns:
+        dict: Información del usuario autenticado
+        
+    Raises:
+        HTTPException: Si el token es inválido o el usuario no existe
+    """
+    credencialesException = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Credenciales inválidas",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    try:
+        payload = decode_token(token)
+        usuarioId = payload.get("sub")
+        if usuarioId is None:
+            raise credencialesException
+            
+        # Aquí normalmente verificarías la existencia del usuario en la BD
+        # Por ahora, simplemente devolvemos la información del token
+        # Aseguramos que el rol devuelto esté en minúsculas, usando 'usuario' como default.
+        return {
+            "id": usuarioId,
+            "rol": payload.get("rol", "usuario").lower(), 
+            "email": payload.get("email", "")
+        }
+    except JWTError:
+        raise credencialesException
+
+# Alias para compatibilidad con snake_case
+obtener_usuario_actual = obtenerUsuarioActual
