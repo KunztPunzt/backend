@@ -914,3 +914,55 @@ WHERE [Cita].estado = ? AND [Cita].[recordatorioEnviado] = 0]
 2025-05-13 22:42:30,333 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-13 22:47:30.321038-05:00 (in 299.987477 seconds)
 2025-05-13 22:42:30,334 - asyncio - DEBUG - Using selector: SelectSelector
 2025-05-13 22:42:30,636 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-13 22:47:30 -05)" executed successfully
+2025-05-20 20:17:09,381 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-20 20:17:09,404 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-20 20:17:09,405 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-20 20:17:09,412 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-20 20:17:10,349 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-20 20:17:10,352 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-20 20:17:10,352 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-20 20:17:10,370 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-20 20:17:10,373 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-20 20:17:10,373 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-20 20:17:10,374 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-20 20:17:10,374 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-20 20:17:10,374 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-20 20:22:10.370544-05:00 (in 299.995810 seconds)
+2025-05-20 20:17:12,311 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-20 20:17:12,312 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-20 20:17:12,312 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-20 20:17:12,319 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-20 20:17:12,439 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-20 20:17:12,440 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-20 20:17:12,441 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-20 20:17:12,451 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-20 20:17:12,453 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-20 20:17:12,453 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-20 20:17:12,454 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-20 20:17:12,454 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-20 20:17:12,455 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-20 20:22:12.451219-05:00 (in 299.995951 seconds)
+2025-05-20 20:17:12,580 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-20 20:17:12,580 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-20 20:17:12,581 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-20 20:17:12,588 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-20 20:17:12,726 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-20 20:17:12,728 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-20 20:17:12,728 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-20 20:17:12,737 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-20 20:17:12,739 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-20 20:17:12,739 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-20 20:17:12,740 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-20 20:17:12,740 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-20 20:17:12,741 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-20 20:22:12.737203-05:00 (in 299.995893 seconds)
+2025-05-20 20:17:14,203 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-20 20:17:14,204 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-20 20:17:14,204 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-20 20:17:14,211 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-20 20:17:14,324 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-20 20:17:14,326 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-20 20:17:14,326 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-20 20:17:14,335 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-20 20:17:14,337 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-20 20:17:14,337 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-20 20:17:14,338 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-20 20:17:14,338 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-20 20:17:14,338 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-20 20:22:14.334931-05:00 (in 299.996047 seconds)
