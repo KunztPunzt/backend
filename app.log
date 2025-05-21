@@ -367,3 +367,265 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2025-05-21 00:04:59,974 - apscheduler.scheduler - DEBUG - Looking for jobs to run
 2025-05-21 00:04:59,975 - backend.main - INFO - Scheduler configurado correctamente
 2025-05-21 00:04:59,975 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:09:59.970600-05:00 (in 299.995152 seconds)
+2025-05-21 00:12:43,470 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:12:43,470 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:12:43,471 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:12:43,480 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:12:44,308 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:12:44,310 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:12:44,310 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:12:44,318 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:12:44,320 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:12:44,320 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:12:44,322 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:12:44,322 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:12:44,322 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:17:44.318476-05:00 (in 299.995719 seconds)
+2025-05-21 00:13:22,990 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:13:22,991 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-21 00:13:22,991 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-21 00:13:22,992 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:13:22,992 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:13:22,993 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-21 00:13:22,994 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:48]
+2025-05-21 00:13:22,994 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:13:22,994 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:13:22,995 - python_multipart.multipart - DEBUG - Calling on_field_name with data[49:57]
+2025-05-21 00:13:22,995 - python_multipart.multipart - DEBUG - Calling on_field_data with data[58:77]
+2025-05-21 00:13:22,996 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:13:22,997 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-21 00:13:23,008 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: admin@sistema.com
+2025-05-21 00:13:23,044 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 00:13:23,046 - passlib.handlers.bcrypt - DEBUG - detected 'bcrypt' backend, version '<unknown>'
+2025-05-21 00:13:23,046 - passlib.handlers.bcrypt - DEBUG - 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-05-21 00:13:23,339 - backend.utilidades.seguridad - DEBUG - Token creado correctamente para usuario: admin@sistema.com
+2025-05-21 00:13:23,340 - backend.controladores.usuarioIngreso - INFO - Login exitoso para el usuario admin@sistema.com, rol: admin
+2025-05-21 00:13:33,447 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:13:33,447 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-21 00:13:33,447 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-21 00:13:33,448 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:13:33,448 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:13:33,449 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-21 00:13:33,449 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:48]
+2025-05-21 00:13:33,449 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:13:33,450 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:13:33,450 - python_multipart.multipart - DEBUG - Calling on_field_name with data[49:57]
+2025-05-21 00:13:33,450 - python_multipart.multipart - DEBUG - Calling on_field_data with data[58:77]
+2025-05-21 00:13:33,451 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:13:33,451 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-21 00:13:33,453 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: admin@sistema.com
+2025-05-21 00:13:33,724 - backend.utilidades.seguridad - DEBUG - Token creado correctamente para usuario: admin@sistema.com
+2025-05-21 00:13:33,724 - backend.controladores.usuarioIngreso - INFO - Login exitoso para el usuario admin@sistema.com, rol: admin
+2025-05-21 00:15:53,695 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:15:53,695 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:15:53,696 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:15:53,703 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:15:54,035 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:15:54,038 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:15:54,039 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:15:54,052 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:15:54,054 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:15:54,055 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:15:54,056 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:15:54,056 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:15:54,056 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:20:54.051734-05:00 (in 299.994944 seconds)
+2025-05-21 00:16:29,397 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:16:29,398 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-21 00:16:29,398 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-21 00:16:29,399 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:16:29,399 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:16:29,400 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-21 00:16:29,400 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:48]
+2025-05-21 00:16:29,401 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:16:29,402 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:16:29,402 - python_multipart.multipart - DEBUG - Calling on_field_name with data[49:57]
+2025-05-21 00:16:29,403 - python_multipart.multipart - DEBUG - Calling on_field_data with data[58:77]
+2025-05-21 00:16:29,404 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:16:29,404 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-21 00:16:29,414 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: admin@sistema.com
+2025-05-21 00:16:29,452 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 00:16:29,455 - passlib.handlers.bcrypt - DEBUG - detected 'bcrypt' backend, version '<unknown>'
+2025-05-21 00:16:29,455 - passlib.handlers.bcrypt - DEBUG - 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-05-21 00:16:29,749 - backend.utilidades.seguridad - DEBUG - Token creado correctamente para usuario: admin@sistema.com
+2025-05-21 00:16:29,750 - backend.controladores.usuarioIngreso - INFO - Login exitoso para el usuario admin@sistema.com, rol: admin
+2025-05-21 00:18:07,077 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:18:07,078 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:18:07,079 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:18:07,088 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:18:07,435 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:18:07,437 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:18:07,438 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:18:07,451 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:18:07,453 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:18:07,454 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:18:07,455 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:18:07,455 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:18:07,456 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:23:07.451222-05:00 (in 299.995200 seconds)
+2025-05-21 00:18:19,430 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:18:19,431 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-21 00:18:19,431 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-21 00:18:19,432 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:18:19,433 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:18:19,433 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-21 00:18:19,434 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:48]
+2025-05-21 00:18:19,434 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:18:19,435 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:18:19,435 - python_multipart.multipart - DEBUG - Calling on_field_name with data[49:57]
+2025-05-21 00:18:19,436 - python_multipart.multipart - DEBUG - Calling on_field_data with data[58:77]
+2025-05-21 00:18:19,437 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:18:19,438 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-21 00:18:19,460 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: admin@sistema.com
+2025-05-21 00:18:19,548 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 00:18:19,550 - passlib.handlers.bcrypt - DEBUG - detected 'bcrypt' backend, version '<unknown>'
+2025-05-21 00:18:19,551 - passlib.handlers.bcrypt - DEBUG - 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-05-21 00:18:19,858 - backend.utilidades.seguridad - DEBUG - Token creado correctamente para usuario: admin@sistema.com
+2025-05-21 00:18:19,858 - backend.controladores.usuarioIngreso - INFO - Login exitoso para el usuario admin@sistema.com, rol: admin
+2025-05-21 00:19:55,091 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:19:55,092 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:19:55,092 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:19:55,099 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:19:55,374 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:19:55,376 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:19:55,377 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:19:55,387 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:19:55,388 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:19:55,389 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:19:55,390 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:19:55,390 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:19:55,390 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:24:55.387241-05:00 (in 299.996518 seconds)
+2025-05-21 00:20:03,404 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:20:03,405 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:20:03,406 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:20:03,415 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:20:03,647 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:20:03,649 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:20:03,650 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:20:03,664 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:20:03,667 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:20:03,667 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:20:03,669 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:20:03,669 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:20:03,669 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:25:03.663891-05:00 (in 299.994090 seconds)
+2025-05-21 00:20:32,461 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:20:32,461 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-21 00:20:32,462 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-21 00:20:32,462 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:20:32,462 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:20:32,463 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-21 00:20:32,463 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:48]
+2025-05-21 00:20:32,463 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:20:32,464 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:20:32,464 - python_multipart.multipart - DEBUG - Calling on_field_name with data[49:57]
+2025-05-21 00:20:32,464 - python_multipart.multipart - DEBUG - Calling on_field_data with data[58:77]
+2025-05-21 00:20:32,465 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:20:32,465 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-21 00:20:32,467 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: admin@sistema.com
+2025-05-21 00:20:32,502 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 00:20:32,504 - passlib.handlers.bcrypt - DEBUG - detected 'bcrypt' backend, version '<unknown>'
+2025-05-21 00:20:32,504 - passlib.handlers.bcrypt - DEBUG - 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-05-21 00:20:32,801 - backend.utilidades.seguridad - DEBUG - Token creado correctamente para usuario: admin@sistema.com
+2025-05-21 00:20:32,801 - backend.controladores.usuarioIngreso - INFO - Login exitoso para el usuario admin@sistema.com, rol: admin
+2025-05-21 00:25:03,668 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:25:03,670 - apscheduler.executors.default - INFO - Running job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-21 00:30:03 -05)" (scheduled at 2025-05-21 00:25:03.663891-05:00)
+2025-05-21 00:25:03,670 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:30:03.663891-05:00 (in 299.993475 seconds)
+2025-05-21 00:25:03,670 - asyncio - DEBUG - Using selector: SelectSelector
+2025-05-21 00:25:03,752 - apscheduler.executors.default - INFO - Job "start_scheduler.<locals>.<lambda> (trigger: interval[0:05:00], next run at: 2025-05-21 00:30:03 -05)" executed successfully
+2025-05-21 00:25:08,018 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:25:08,019 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:25:08,020 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:25:08,029 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:25:08,369 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:25:08,371 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:25:08,371 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:25:08,382 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:25:08,384 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:25:08,385 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:25:08,386 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:25:08,386 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:25:08,386 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:30:08.382448-05:00 (in 299.995741 seconds)
+2025-05-21 00:25:11,241 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:25:11,241 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:25:11,242 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:25:11,251 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:25:11,456 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:25:11,458 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:25:11,459 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:25:11,470 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:25:11,472 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:25:11,473 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:25:11,473 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:25:11,474 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:25:11,474 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:30:11.470477-05:00 (in 299.996045 seconds)
+2025-05-21 00:25:17,707 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:25:17,708 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:25:17,708 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:25:17,716 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:26:25,392 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:26:25,393 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:26:25,394 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:26:25,400 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:26:25,817 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:26:25,818 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:26:25,819 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:26:25,828 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:26:25,830 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:26:25,830 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:26:25,831 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:26:25,831 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:26:25,832 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:31:25.828435-05:00 (in 299.996360 seconds)
+2025-05-21 00:26:37,789 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:26:37,789 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:10]
+2025-05-21 00:26:37,790 - python_multipart.multipart - DEBUG - Calling on_field_data with data[11:19]
+2025-05-21 00:26:37,790 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:26:37,791 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:26:37,791 - python_multipart.multipart - DEBUG - Calling on_field_name with data[20:28]
+2025-05-21 00:26:37,791 - python_multipart.multipart - DEBUG - Calling on_field_data with data[29:48]
+2025-05-21 00:26:37,792 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:26:37,792 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-05-21 00:26:37,793 - python_multipart.multipart - DEBUG - Calling on_field_name with data[49:57]
+2025-05-21 00:26:37,793 - python_multipart.multipart - DEBUG - Calling on_field_data with data[58:77]
+2025-05-21 00:26:37,793 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-05-21 00:26:37,794 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-05-21 00:26:37,803 - backend.controladores.usuarioIngreso - INFO - Intento de login desde 127.0.0.1 para usuario: admin@sistema.com
+2025-05-21 00:26:37,836 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\Code Snippets\Python\FastAPI\2025\Yavanna\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 00:26:37,839 - passlib.handlers.bcrypt - DEBUG - detected 'bcrypt' backend, version '<unknown>'
+2025-05-21 00:26:37,840 - passlib.handlers.bcrypt - DEBUG - 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-05-21 00:26:38,134 - backend.utilidades.seguridad - DEBUG - Token creado correctamente para usuario: admin@sistema.com
+2025-05-21 00:26:38,134 - backend.controladores.usuarioIngreso - INFO - Login exitoso para el usuario admin@sistema.com, rol: admin
+2025-05-21 00:28:59,730 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-05-21 00:28:59,731 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-05-21 00:28:59,732 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-05-21 00:28:59,739 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-05-21 00:29:00,217 - backend.main - INFO - Aplicación configurada y lista para recibir peticiones
+2025-05-21 00:29:00,220 - backend.main - INFO - Iniciando aplicación y configurando scheduler
+2025-05-21 00:29:00,221 - tzlocal - DEBUG - Looking up time zone info from registry
+2025-05-21 00:29:00,233 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-05-21 00:29:00,235 - apscheduler.scheduler - INFO - Added job "start_scheduler.<locals>.<lambda>" to job store "default"
+2025-05-21 00:29:00,236 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-21 00:29:00,237 - apscheduler.scheduler - DEBUG - Looking for jobs to run
+2025-05-21 00:29:00,238 - backend.main - INFO - Scheduler configurado correctamente
+2025-05-21 00:29:00,238 - apscheduler.scheduler - DEBUG - Next wakeup is due at 2025-05-21 00:34:00.232884-05:00 (in 299.994323 seconds)

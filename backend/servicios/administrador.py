@@ -95,7 +95,7 @@ class ServicioAdministrador:
             email=nuevoAdmin.email,
             rol=nuevoAdmin.rol,
             estadoCuenta=nuevoAdmin.estadoCuenta,
-            fechaCreacion=nuevoAdmin.fechaCreacion
+            fechaCreacion=nuevoAdmin.fecha_registro
         )
         
     def obtenerAdministrador(self, admin_id: int) -> Optional[AdministradorResponse]:
@@ -123,7 +123,7 @@ class ServicioAdministrador:
             email=adminDb.email,
             rol=adminDb.rol,
             estadoCuenta=adminDb.estadoCuenta,
-            fechaCreacion=adminDb.fechaCreacion
+            fechaCreacion=adminDb.fecha_registro
         )
         
     def actualizarAdministrador(
@@ -184,7 +184,7 @@ class ServicioAdministrador:
             email=adminDb.email,
             rol=adminDb.rol,
             estadoCuenta=adminDb.estadoCuenta,
-            fechaCreacion=adminDb.fechaCreacion
+            fechaCreacion=adminDb.fecha_registro
         )
 
     def registrarVeterinario(
@@ -373,7 +373,7 @@ class ServicioAdministrador:
         Returns:
             Lista de usuarios
         """
-        usuarios = self.db.query(Usuario).offset(skip).limit(limit).all()
+        usuarios = self.db.query(Usuario).order_by(Usuario.idUser).offset(skip).limit(limit).all()
         return [
             UsuarioResponse(
                 id=usuario.idUser,
@@ -381,8 +381,7 @@ class ServicioAdministrador:
                 apellidos=usuario.apellidos,
                 email=usuario.email,
                 rol=usuario.rol,
-                estadoCuenta=usuario.estadoCuenta,
-                fechaCreacion=usuario.fechaCreacion
+                estadoCuenta=usuario.estadoCuenta
             )
             for usuario in usuarios
         ]
@@ -475,5 +474,5 @@ class ServicioAdministrador:
             email=db_usuario.email,
             rol=db_usuario.rol,
             estadoCuenta=db_usuario.estadoCuenta,
-            fechaCreacion=db_usuario.fechaCreacion
+            fechaCreacion=db_usuario.fecha_registro
         ) 
