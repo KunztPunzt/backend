@@ -18,7 +18,9 @@ from backend.dtos.administrador import (
     EstadisticasSistema, 
     AdministradorCreate, 
     AdministradorUpdate,
-    AdministradorResponse
+    AdministradorResponse,
+    UsuarioUpdate,
+    UsuarioResponse
 )
 from backend.utilidades.seguridad import hash_password
 from backend.utilidades.enviarCorreo import send_activation_email
@@ -359,3 +361,119 @@ class ServicioAdministrador:
         )
 
         return db_usuario 
+
+    def listarUsuarios(self, skip: int = 0, limit: int = 100) -> List[UsuarioResponse]:
+        """
+        Lista todos los usuarios del sistema.
+        
+        Args:
+            skip: Número de registros a saltar
+            limit: Número máximo de registros a retornar
+            
+        Returns:
+            Lista de usuarios
+        """
+        usuarios = self.db.query(Usuario).offset(skip).limit(limit).all()
+        return [
+            UsuarioResponse(
+                id=usuario.idUser,
+                nombre=usuario.nombre,
+                apellidos=usuario.apellidos,
+                email=usuario.email,
+                rol=usuario.rol,
+                estadoCuenta=usuario.estadoCuenta,
+                fechaCreacion=usuario.fechaCreacion
+            )
+            for usuario in usuarios
+        ]
+
+    def eliminarUsuario(self, usuario_id: int) -> bool:
+        """
+        Elimina un usuario del sistema.
+        
+        Args:
+            usuario_id: ID del usuario a eliminar
+            
+        Returns:
+            True si el usuario fue eliminado, False si no existe
+        """
+        usuario = self.db.query(Usuario).filter(Usuario.idUser == usuario_id).first()
+        if not usuario:
+            return False
+            
+        # Si es un veterinario, eliminar también su registro
+        if usuario.rol == "veterinario":
+            veterinario = self.db.query(Veterinario).filter(
+                Veterinario.idUsuario == usuario_id
+            ).first()
+            if veterinario:
+                # Eliminar el archivo del diploma si existe
+                if veterinario.diploma:
+                    ruta_diploma = os.path.join("static", veterinario.diploma.lstrip("/"))
+                    if os.path.exists(ruta_diploma):
+                        os.remove(ruta_diploma)
+                self.db.delete(veterinario)
+        
+        self.db.delete(usuario)
+        self.db.commit()
+        return True
+
+    def modificarUsuario(
+        self, 
+        usuario_id: int, 
+        usuario: UsuarioUpdate
+    ) -> Optional[UsuarioResponse]:
+        """
+        Modifica la información de un usuario.
+        
+        Args:
+            usuario_id: ID del usuario a modificar
+            usuario: Datos nuevos del usuario
+            
+        Returns:
+            Información actualizada del usuario o None si no existe
+        """
+        db_usuario = self.db.query(Usuario).filter(Usuario.idUser == usuario_id).first()
+        if not db_usuario:
+            return None
+            
+        # Actualizar solo los campos proporcionados
+        if usuario.nombre is not None:
+            db_usuario.nombre = usuario.nombre
+            
+        if usuario.apellidos is not None:
+            db_usuario.apellidos = usuario.apellidos
+            
+        if usuario.email is not None:
+            # Verificar que el email no esté en uso por otro usuario
+            existe_email = self.db.query(Usuario).filter(
+                Usuario.email == usuario.email,
+                Usuario.idUser != usuario_id
+            ).first()
+            
+            if existe_email:
+                raise ValueError("El email ya está en uso por otro usuario")
+                
+            db_usuario.email = usuario.email
+            
+        if usuario.password is not None:
+            db_usuario.password = hash_password(usuario.password)
+            
+        if usuario.rol is not None:
+            db_usuario.rol = usuario.rol.lower()
+            
+        if usuario.estadoCuenta is not None:
+            db_usuario.estadoCuenta = usuario.estadoCuenta.lower()
+            
+        self.db.commit()
+        self.db.refresh(db_usuario)
+        
+        return UsuarioResponse(
+            id=db_usuario.idUser,
+            nombre=db_usuario.nombre,
+            apellidos=db_usuario.apellidos,
+            email=db_usuario.email,
+            rol=db_usuario.rol,
+            estadoCuenta=db_usuario.estadoCuenta,
+            fechaCreacion=db_usuario.fechaCreacion
+        ) 
