@@ -1,6 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status, File, Form, UploadFile, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from fastapi.responses import FileResponse
+from backend.servicios.reportes import ServicioReportes
+import uuid
+import os
+from datetime import datetime
 
 from backend.servicios.baseDatos import get_db
 from backend.servicios.administrador import ServicioAdministrador
@@ -281,4 +286,45 @@ def registrarNuevoAsistente(
     return {
         "mensaje": "Asistente registrado exitosamente. Se ha enviado un correo de activación.",
         "email": usuario.email
-    } 
+    }
+
+@router.get(
+    "/estadisticas/reporte",
+    name="Generar Reporte de Estadísticas",
+    summary="Generar Reporte de Estadísticas"
+)
+def generarReporteEstadisticas(
+    db: Session = Depends(get_db),
+    usuarioActual: dict = Depends(obtenerUsuarioActual)
+):
+    """
+    Genera un reporte PDF con las estadísticas del sistema.
+    Solo los administradores pueden generar este reporte.
+    """
+    if usuarioActual["rol"] != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tiene permisos para generar reportes"
+        )
+    
+    # Obtener estadísticas
+    servicio = ServicioAdministrador(db)
+    estadisticas = servicio.getEstadisticas()
+    
+    # Generar nombre único para el archivo
+    nombre_archivo = f"estadisticas_{uuid.uuid4().hex}.pdf"
+    carpeta = os.path.join("static", "reportes")
+    ruta_archivo = os.path.join(carpeta, nombre_archivo)
+    
+    # Generar reporte
+    ServicioReportes.generarReporteEstadisticas(
+        estadisticas=estadisticas.dict(),
+        output_path=ruta_archivo
+    )
+    
+    # Devolver archivo
+    return FileResponse(
+        path=ruta_archivo,
+        filename=f"estadisticas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+        media_type="application/pdf"
+    ) 

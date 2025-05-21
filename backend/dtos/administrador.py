@@ -59,7 +59,6 @@ class UsuarioBase(BaseModel):
 
 class UsuarioResponse(UsuarioBase):
     id: int
-    fechaCreacion: datetime
 
     class Config:
         from_attributes = True
