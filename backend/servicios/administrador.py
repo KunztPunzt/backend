@@ -1,0 +1,241 @@
+from sqlalchemy.orm import Session
+from sqlalchemy import func
+from typing import Optional, List
+import secrets
+import os
+import uuid
+import shutil
+from fastapi import UploadFile
+
+from backend.modelos.usuario import Usuario
+from backend.modelos.veterinario import Veterinario
+from backend.modelos.mascota import Mascota
+from backend.modelos.cita import Cita
+from backend.dtos.administrador import (
+    EstadisticasSistema, 
+    AdministradorCreate, 
+    AdministradorUpdate,
+    AdministradorResponse
+)
+from backend.utilidades.seguridad import hash_password
+
+class ServicioAdministrador:
+    def __init__(self, db: Session):
+        self.db = db
+
+    def getEstadisticas(self) -> EstadisticasSistema:
+        total_usuarios = self.db.query(func.count(Usuario.idUser)).scalar()
+        total_veterinarios = self.db.query(func.count(Veterinario.idVeterinario)).scalar()
+        total_mascotas = self.db.query(func.count(Mascota.idMascota)).scalar()
+        total_citas = self.db.query(func.count(Cita.idCita)).scalar()
+        
+        citas_pendientes = self.db.query(func.count(Cita.idCita)).filter(
+            Cita.estado == "pendiente"
+        ).scalar()
+        
+        citas_completadas = self.db.query(func.count(Cita.idCita)).filter(
+            Cita.estado == "completada"
+        ).scalar()
+        
+        citas_canceladas = self.db.query(func.count(Cita.idCita)).filter(
+            Cita.estado == "cancelada"
+        ).scalar()
+
+        return EstadisticasSistema(
+            totalUsuarios=total_usuarios,
+            totalVeterinarios=total_veterinarios,
+            totalMascotas=total_mascotas,
+            totalCitas=total_citas,
+            citasPendientes=citas_pendientes,
+            citasCompletadas=citas_completadas,
+            citasCanceladas=citas_canceladas
+        )
+
+    def crearAdministrador(self, admin: AdministradorCreate) -> AdministradorResponse:
+        """
+        Crea un nuevo administrador en el sistema.
+        
+        Args:
+            admin: Datos del administrador a crear
+            
+        Returns:
+            Información del administrador creado
+        """
+        # Verificar si el email ya existe
+        if self.db.query(Usuario).filter(Usuario.email == admin.email).first():
+            raise ValueError("El email ya está registrado")
+            
+        # Crear el usuario administrador
+        nuevoAdmin = Usuario(
+            nombre=admin.nombre,
+            apellidos=admin.apellidos,
+            email=admin.email,
+            password=hash_password(admin.password),
+            rol="admin",
+            estadoCuenta="activo",
+            tokenActivacion=None
+        )
+        
+        self.db.add(nuevoAdmin)
+        self.db.commit()
+        self.db.refresh(nuevoAdmin)
+        
+        # Convertir a respuesta DTO
+        return AdministradorResponse(
+            id=nuevoAdmin.idUser,
+            nombre=nuevoAdmin.nombre,
+            apellidos=nuevoAdmin.apellidos,
+            email=nuevoAdmin.email,
+            rol=nuevoAdmin.rol,
+            estadoCuenta=nuevoAdmin.estadoCuenta,
+            fechaCreacion=nuevoAdmin.fechaCreacion
+        )
+        
+    def obtenerAdministrador(self, admin_id: int) -> Optional[AdministradorResponse]:
+        """
+        Obtiene la información de un administrador por su ID.
+        
+        Args:
+            admin_id: ID del administrador a buscar
+            
+        Returns:
+            Información del administrador o None si no existe
+        """
+        adminDb = self.db.query(Usuario).filter(
+            Usuario.idUser == admin_id,
+            Usuario.rol == "admin"
+        ).first()
+        
+        if not adminDb:
+            return None
+            
+        return AdministradorResponse(
+            id=adminDb.idUser,
+            nombre=adminDb.nombre,
+            apellidos=adminDb.apellidos,
+            email=adminDb.email,
+            rol=adminDb.rol,
+            estadoCuenta=adminDb.estadoCuenta,
+            fechaCreacion=adminDb.fechaCreacion
+        )
+        
+    def actualizarAdministrador(
+        self, 
+        admin_id: int, 
+        admin: AdministradorUpdate
+    ) -> Optional[AdministradorResponse]:
+        """
+        Actualiza la información de un administrador existente.
+        
+        Args:
+            admin_id: ID del administrador a actualizar
+            admin: Datos nuevos del administrador
+            
+        Returns:
+            Información actualizada del administrador o None si no existe
+        """
+        adminDb = self.db.query(Usuario).filter(
+            Usuario.idUser == admin_id,
+            Usuario.rol == "admin"
+        ).first()
+        
+        if not adminDb:
+            return None
+            
+        # Actualizar solo los campos proporcionados
+        if admin.nombre is not None:
+            adminDb.nombre = admin.nombre
+            
+        if admin.apellidos is not None:
+            adminDb.apellidos = admin.apellidos
+            
+        if admin.email is not None:
+            # Verificar que el email no esté en uso por otro usuario
+            existeEmail = self.db.query(Usuario).filter(
+                Usuario.email == admin.email,
+                Usuario.idUser != admin_id
+            ).first()
+            
+            if existeEmail:
+                raise ValueError("El email ya está en uso por otro usuario")
+                
+            adminDb.email = admin.email
+            
+        if admin.password is not None:
+            adminDb.password = hash_password(admin.password)
+            
+        if admin.estadoCuenta is not None:
+            adminDb.estadoCuenta = admin.estadoCuenta.lower() # Asegurar minúsculas
+            
+        self.db.commit()
+        self.db.refresh(adminDb)
+        
+        return AdministradorResponse(
+            id=adminDb.idUser,
+            nombre=adminDb.nombre,
+            apellidos=adminDb.apellidos,
+            email=adminDb.email,
+            rol=adminDb.rol,
+            estadoCuenta=adminDb.estadoCuenta,
+            fechaCreacion=adminDb.fechaCreacion
+        )
+
+    def registrarVeterinario(
+        self,
+        nombre: str,
+        apellidos: str,
+        email: str,
+        password: str,
+        almaMater: str,
+        diploma: UploadFile,
+        añosExperiencia: int,
+        especialidad: str
+    ) -> Optional[Usuario]:
+        # Verificar si el email ya existe
+        if self.db.query(Usuario).filter(Usuario.email == email).first():
+            return None
+
+        # Guardar el archivo del diploma
+        extension = os.path.splitext(diploma.filename)[1]
+        nombre_archivo = f"{uuid.uuid4().hex}{extension}"
+        carpeta = os.path.join("static", "documentos", "diplomas")
+        os.makedirs(carpeta, exist_ok=True)
+        ruta_archivo = os.path.join(carpeta, nombre_archivo)
+        
+        # Guardar archivo en disco
+        with open(ruta_archivo, "wb") as buffer:
+            shutil.copyfileobj(diploma.file, buffer)
+        
+        # URL para la base de datos
+        url_diploma = f"/static/documentos/diplomas/{nombre_archivo}"
+
+        # Generar token de activación
+        token_activacion = secrets.token_urlsafe(32)
+
+        # Crear usuario veterinario
+        db_usuario = Usuario(
+            nombre=nombre,
+            apellidos=apellidos,
+            email=email,
+            password=hash_password(password),
+            rol="veterinario",
+            estadoCuenta="pendiente",
+            tokenActivacion=token_activacion
+        )
+        self.db.add(db_usuario)
+        self.db.flush()  # Para obtener el ID del usuario
+
+        # Crear registro de veterinario
+        db_veterinario = Veterinario(
+            idUsuario=db_usuario.idUser,
+            almaMater=almaMater,
+            diploma=url_diploma,  # Guardar URL del diploma
+            añosExperiencia=añosExperiencia,
+            especialidad=especialidad,
+            estadoLicencia="pendiente"
+        )
+        self.db.add(db_veterinario)
+        self.db.commit()
+        self.db.refresh(db_usuario)
+
+        return db_usuario 

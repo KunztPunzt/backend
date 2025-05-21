@@ -5,10 +5,22 @@ from backend.dtos.cambiarContrasenaDto import CambiarContrasenaDto
 from backend.utilidades.seguridad import verificar_contrasena, obtener_password_hash
 from backend.utilidades.dependencias import get_db, get_current_user
 
-router = APIRouter(prefix="/usuarios", tags=["Cambio de contraseña"])
+router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
 
-@router.post("/cambiar-contrasena", status_code=status.HTTP_200_OK)
+@router.post(
+    "/cambiar-contrasena", 
+    status_code=status.HTTP_200_OK,
+    summary="Cambiar Contraseña de Usuario"
+)
 def cambiar_contrasena(datos: CambiarContrasenaDto, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    """
+    Permite al usuario cambiar su contraseña actual por una nueva.
+    
+    - Valida que la contraseña actual sea correcta
+    - Verifica que la nueva contraseña y su confirmación coincidan
+    - Aplica requisitos de seguridad para la nueva contraseña
+    - Actualiza la contraseña en la base de datos
+    """
     # 1. Validar contraseña actual
     if not verificar_contrasena(datos.contrasenaActual, current_user.password):
         return HTMLResponse("<h3>La contraseña actual es incorrecta.</h3>", status_code=400)

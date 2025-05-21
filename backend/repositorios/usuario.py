@@ -9,14 +9,15 @@ from backend.servicios.baseDatos import Base
 from backend.utilidades.seguridad import hash_password, verify_password
 
 def crear_usuario(db: Session, usuario: UsuarioCrear):
-    # Crear el usuario en estado “pendiente”
+    # Crear el usuario en estado “pendiente” y rol en minúsculas
+    rol_a_guardar = usuario.rol.lower() if usuario.rol else "cliente"
     db_usuario = Usuario(
         nombre=usuario.nombre,
         apellidos=usuario.apellidos,
         email=usuario.email,
         password=hash_password(usuario.password), 
-        rol=usuario.rol,
-        estadoCuenta="pendiente",
+        rol=rol_a_guardar,
+        estadoCuenta="pendiente", # Estado en minúsculas
     )
     db.add(db_usuario)
     db.commit()
@@ -47,7 +48,8 @@ def autenticar_usuario(db: Session, email: str, password: str):
         return {"success": False, "message": "Usuario no encontrado."}
     if not verify_password(password, usuario.password):
         return {"success": False, "message": "Contraseña incorrecta."}
-    if usuario.estadoCuenta != "activo":
+    # Verificar estado en minúsculas
+    if usuario.estadoCuenta.lower() != "activo":
         return {"success": False, "message": "Cuenta pendiente de activación."}
     
     return {"success": True, "message": "Inicio de sesión exitoso", "usuario": usuario}

@@ -1,20 +1,35 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from backend.dtos.citaDto import CitaCrearDto, CitaDto, TipoServicio, CitaActualizarDto, CitaCancelarDto
+from backend.dtos.veterinarioDto import VeterinarioDto
 from backend.modelos.cita import Cita
 from backend.modelos.mascota import Mascota
 from backend.modelos.servicio import Servicio
 from backend.modelos.veterinario import Veterinario
 from backend.utilidades.dependencias import get_db, get_current_user
+from typing import List
 
 router = APIRouter(prefix="/citas", tags=["Citas"])
 
-@router.post("/", response_model=CitaDto, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/", 
+    response_model=CitaDto, 
+    status_code=status.HTTP_201_CREATED,
+    summary="Crear Nueva Cita"
+)
 def crear_cita(
     cita_in: CitaCrearDto,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
+    """
+    Crea una nueva cita para una mascota.
+    
+    - Solo usuarios con rol 'cliente' pueden crear citas
+    - La mascota debe pertenecer al cliente
+    - El servicio debe existir en el sistema
+    - El veterinario, si se especifica, debe existir
+    """
     # 1) Sólo clientes
     if current_user.rol != "cliente":
         raise HTTPException(403, "Solo clientes pueden solicitar citas.")
@@ -62,13 +77,23 @@ def crear_cita(
         estado=nueva.estado
     )
 
-@router.put("/{idCita}", response_model=CitaDto)
+@router.put(
+    "/{idCita}", 
+    response_model=CitaDto,
+    summary="Modificar Cita Existente"
+)
 def modificar_cita(
     idCita: int,
     cita_update: CitaActualizarDto,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
+    """
+    Modifica una cita existente.
+    
+    - Solo el cliente propietario puede modificar sus citas
+    - Se pueden modificar: fecha/hora, tipo de servicio, notas y veterinario
+    """
     # Buscar la cita
     cita = db.get(Cita, idCita)
     if not cita:
@@ -110,13 +135,23 @@ def modificar_cita(
         estado=cita.estado
     )
 
-@router.delete("/{idCita}", response_model=CitaDto)
+@router.delete(
+    "/{idCita}", 
+    response_model=CitaDto,
+    summary="Cancelar Cita"
+)
 def cancelar_cita(
     idCita: int,
     cancelacion: CitaCancelarDto,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
+    """
+    Cancela una cita existente.
+    
+    - Solo el cliente propietario puede cancelar sus citas
+    - Se requiere indicar un motivo de cancelación
+    """
     cita = db.get(Cita, idCita)
     if not cita:
         raise HTTPException(404, "Cita no encontrada.")
@@ -138,12 +173,22 @@ def cancelar_cita(
         motivoCancelacion=cita.motivoCancelacion
     )
 
-@router.put("/{idCita}/confirmar", response_model=CitaDto)
+@router.put(
+    "/{idCita}/confirmar", 
+    response_model=CitaDto,
+    summary="Confirmar Asistencia a Cita"
+)
 def confirmar_cita(
     idCita: int,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
+    """
+    Confirma la asistencia a una cita pendiente.
+    
+    - Solo el cliente propietario puede confirmar sus citas
+    - Solo se pueden confirmar citas en estado 'pendiente'
+    """
     cita = db.get(Cita, idCita)
     if not cita:
         raise HTTPException(404, "Cita no encontrada.")
@@ -165,3 +210,36 @@ def confirmar_cita(
         estado=cita.estado,
         motivoCancelacion=cita.motivoCancelacion
     )
+
+@router.get(
+    "/veterinarios", 
+    response_model=List[VeterinarioDto],
+    summary="Listar Veterinarios Disponibles"
+)
+def obtener_veterinarios_disponibles(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    """
+    Obtiene la lista de todos los veterinarios disponibles en el sistema.
+    
+    - Disponible para todos los usuarios autenticados
+    - Incluye nombre completo, especialidad y experiencia de cada veterinario
+    """
+    veterinarios = db.query(Veterinario).all()
+    
+    # Transformar los resultados para incluir el nombre del usuario
+    veterinarios_dto = []
+    for vet in veterinarios:
+        veterinarios_dto.append(
+            VeterinarioDto(
+                idVeterinario=vet.idVeterinario,
+                nombre=f"{vet.usuario.nombre} {vet.usuario.apellidos}",
+                especialidad=vet.especialidad,
+                añosExperiencia=vet.añosExperiencia,
+                estadoLicencia=vet.estadoLicencia,
+                almaMater=vet.almaMater
+            )
+        )
+    
+    return veterinarios_dto
