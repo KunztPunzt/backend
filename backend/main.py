@@ -25,13 +25,25 @@ from backend.controladores.mascota import router as mascota_router
 from backend.controladores.cita import router as cita_router
 from backend.controladores.cambioContrasena import router as cambio_contrasena_router
 from backend.controladores.auditoria import router as auditoria_router
+from backend.controladores.administrador import router as administrador_router
 
 # Conexión a la BD y creación de tablas
 from backend.servicios.baseDatos import Base, engine
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    title="Yavanna - API de Gestión Veterinaria",
+    description="API para la gestión de clínica veterinaria Yavanna",
+    version="1.0.0",
+    # Personalizar apariencia de Swagger UI
+    swagger_ui_parameters={
+        "defaultModelsExpandDepth": -1,  # Oculta esquemas por defecto
+        "deepLinking": True,             # Permitir links directos a operaciones
+        "displayRequestDuration": True,  # Muestra duración de la petición
+        "docExpansion": "list"           # Operaciones colapsadas por defecto
+    }
+)
 
 # Configurar CORS
 app.add_middleware(
@@ -62,24 +74,23 @@ def start_scheduler():
 async def redirect_to_docs():
     return RedirectResponse(url="/docs")
 
-# Routers de usuario
-app.include_router(usuarioRegistro.router, prefix="/usuarios", tags=["usuarios"])
-app.include_router(usuarioIngreso.router, prefix="/usuarios", tags=["usuarios"])
+# Routers de usuario - usar los tags definidos en cada router
+app.include_router(usuarioRegistro.router, prefix="/usuarios")
+app.include_router(usuarioIngreso.router, prefix="/usuarios")
 
 # Router de mascotas
-app.include_router(
-    mascota_router,
-    prefix="/mascotas",
-    tags=["Mascotas"],
-)
+app.include_router(mascota_router, prefix="/mascotas")
 
 # Router Citas
-app.include_router(cita_router, prefix="/citas", tags=["Citas"])
+app.include_router(cita_router, prefix="/citas")
 
 # Router de cambio de contraseña
 app.include_router(cambio_contrasena_router)
 
 # Router de auditoría
-app.include_router(auditoria_router, prefix="/admin", tags=["Auditoría"])
+app.include_router(auditoria_router, prefix="/admin")
+
+# Router de administrador
+app.include_router(administrador_router)
 
 logger.info("Aplicación configurada y lista para recibir peticiones")
