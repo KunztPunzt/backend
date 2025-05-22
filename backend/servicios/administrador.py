@@ -250,6 +250,7 @@ class ServicioAdministrador:
         self.db.commit()
         self.db.refresh(db_usuario)
 
+<<<<<<< Updated upstream
         # Enviar correo de activación
         background_tasks = BackgroundTasks()
         background_tasks.add_task(
@@ -307,6 +308,11 @@ class ServicioAdministrador:
         return veterinario 
 
     def registrarAsistente(
+=======
+        return db_usuario
+
+    def crearAsistente(
+>>>>>>> Stashed changes
         self,
         nombre: str,
         apellidos: str,
@@ -314,7 +320,11 @@ class ServicioAdministrador:
         password: str
     ) -> Optional[Usuario]:
         """
+<<<<<<< Updated upstream
         Registra un nuevo asistente en el sistema.
+=======
+        Crea un nuevo asistente en el sistema.
+>>>>>>> Stashed changes
         
         Args:
             nombre: Nombre del asistente
@@ -329,6 +339,7 @@ class ServicioAdministrador:
         if self.db.query(Usuario).filter(Usuario.email == email).first():
             return None
 
+<<<<<<< Updated upstream
         # Generar token JWT con expiración
         expire = datetime.utcnow() + timedelta(hours=settings.jwt_expiration_hours)
         token = jwt.encode(
@@ -337,6 +348,8 @@ class ServicioAdministrador:
             algorithm=settings.jwt_algorithm
         )
 
+=======
+>>>>>>> Stashed changes
         # Crear usuario asistente
         db_usuario = Usuario(
             nombre=nombre,
@@ -344,6 +357,7 @@ class ServicioAdministrador:
             email=email,
             password=hash_password(password),
             rol="asistente",
+<<<<<<< Updated upstream
             estadoCuenta="pendiente",
             tokenActivacion=token
         )
@@ -476,3 +490,13 @@ class ServicioAdministrador:
             estadoCuenta=db_usuario.estadoCuenta,
             fechaCreacion=db_usuario.fecha_registro
         ) 
+=======
+            estadoCuenta="activo",  # Los asistentes se crean activos directamente
+            tokenActivacion=None
+        )
+        self.db.add(db_usuario)
+        self.db.commit()
+        self.db.refresh(db_usuario)
+        
+        return db_usuario 
+>>>>>>> Stashed changes
