@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 from enum import Enum
+from decimal import Decimal
 
 
 class TipoServicio(str, Enum):
@@ -26,6 +27,8 @@ class CitaActualizarDto(BaseModel):
     tipoServicio: Optional[TipoServicio] = None
     notasAdicionales: Optional[str] = None
     idVeterinario: Optional[int] = None
+    diagnostico: Optional[str] = None
+    peso: Optional[Decimal] = None
 
 # Para la respuesta, incluye el ID generado y el estado (pendiente, confirmada, atendida…).
 
@@ -37,6 +40,8 @@ class CitaDto(BaseModel):
     notasAdicionales: Optional[str] = None
     estado: str
     motivoCancelacion: Optional[str] = None
+    diagnostico: Optional[str] = None
+    peso: Optional[Decimal] = None
 
 # DTO para cancelar una cita con motivo
 class CitaCancelarDto(BaseModel):

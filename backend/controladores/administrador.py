@@ -13,7 +13,8 @@ from backend.dtos.administrador import (
     EstadisticasSistema,
     VeterinarioRegistro,
     UsuarioUpdate,
-    UsuarioResponse
+    UsuarioResponse,
+    AsistenteRegistro
 )
 from backend.utilidades.seguridad import obtenerUsuarioActual
 from backend.utilidades.enviarCorreo import send_activation_email
@@ -242,19 +243,16 @@ def validarDiplomaVeterinario(
     summary="Registrar Nuevo Asistente"
 )
 def registrarNuevoAsistente(
-    nombre: str = Form(...),
-    apellidos: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
-    background_tasks: BackgroundTasks = BackgroundTasks(),
+    asistente: AsistenteRegistro,
     db: Session = Depends(get_db),
     usuarioActual: dict = Depends(obtenerUsuarioActual)
 ):
     """
     Registra un nuevo asistente en el sistema.
     
-    - Solo los administradores pueden registrar nuevos asistentes
-    - El sistema envía un correo de activación al asistente registrado
+    - Solo los administradores pueden registrar asistentes
+    - El asistente se crea con cuenta activa inmediatamente
+    - Se requiere nombre, apellidos, email y contraseña
     """
     if usuarioActual["rol"] != "admin":
         raise HTTPException(
@@ -263,29 +261,25 @@ def registrarNuevoAsistente(
         )
     
     servicio = ServicioAdministrador(db)
-    usuario = servicio.registrarAsistente(
-        nombre=nombre,
-        apellidos=apellidos,
-        email=email,
-        password=password
+    nuevo_asistente = servicio.crearAsistente(
+        nombre=asistente.nombre,
+        apellidos=asistente.apellidos,
+        email=asistente.email,
+        password=asistente.password
     )
     
-    if not usuario:
+    if not nuevo_asistente:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="El email ya está registrado"
         )
     
-    # Enviar correo de activación
-    background_tasks.add_task(
-        send_activation_email,
-        usuario.email,
-        usuario.tokenActivacion
-    )
-    
     return {
-        "mensaje": "Asistente registrado exitosamente. Se ha enviado un correo de activación.",
-        "email": usuario.email
+        "mensaje": "Asistente registrado exitosamente",
+        "id": nuevo_asistente.idUser,
+        "email": nuevo_asistente.email,
+        "nombre": f"{nuevo_asistente.nombre} {nuevo_asistente.apellidos}",
+        "rol": nuevo_asistente.rol
     }
 
 @router.get(
@@ -327,4 +321,4 @@ def generarReporteEstadisticas(
         path=ruta_archivo,
         filename=f"estadisticas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
         media_type="application/pdf"
-    ) 
+    )
