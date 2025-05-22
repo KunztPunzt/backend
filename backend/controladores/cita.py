@@ -8,6 +8,7 @@ from backend.modelos.servicio import Servicio
 from backend.modelos.veterinario import Veterinario
 from backend.utilidades.dependencias import get_db, get_current_user
 from typing import List
+from decimal import Decimal
 
 router = APIRouter(prefix="/citas", tags=["Citas"])
 
@@ -74,7 +75,10 @@ def crear_cita(
         tipoServicio=tipo_servicio,
         fechaHora=nueva.fechaHora,
         notasAdicionales=nueva.notasAdicionales,
-        estado=nueva.estado
+        estado=nueva.estado,
+        motivoCancelacion=nueva.motivoCancelacion,
+        diagnostico=nueva.diagnostico,
+        peso=nueva.peso
     )
 
 @router.put(
@@ -132,7 +136,10 @@ def modificar_cita(
         tipoServicio=tipo_servicio,
         fechaHora=cita.fechaHora,
         notasAdicionales=cita.notasAdicionales,
-        estado=cita.estado
+        estado=cita.estado,
+        motivoCancelacion=cita.motivoCancelacion,
+        diagnostico=cita.diagnostico,
+        peso=cita.peso
     )
 
 @router.delete(
@@ -170,7 +177,9 @@ def cancelar_cita(
         fechaHora=cita.fechaHora,
         notasAdicionales=cita.notasAdicionales,
         estado=cita.estado,
-        motivoCancelacion=cita.motivoCancelacion
+        motivoCancelacion=cita.motivoCancelacion,
+        diagnostico=cita.diagnostico,
+        peso=cita.peso
     )
 
 @router.put(
@@ -208,7 +217,9 @@ def confirmar_cita(
         fechaHora=cita.fechaHora,
         notasAdicionales=cita.notasAdicionales,
         estado=cita.estado,
-        motivoCancelacion=cita.motivoCancelacion
+        motivoCancelacion=cita.motivoCancelacion,
+        diagnostico=cita.diagnostico,
+        peso=cita.peso
     )
 
 @router.get(
@@ -243,3 +254,150 @@ def obtener_veterinarios_disponibles(
         )
     
     return veterinarios_dto
+
+@router.put(
+    "/{idCita}/atender", 
+    response_model=CitaDto,
+    summary="Atender Cita"
+)
+def atender_cita(
+    idCita: int,
+    diagnostico: str,
+    peso: Decimal,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    """
+    Atiende una cita y registra el diagnóstico y peso de la mascota.
+    
+    - Solo veterinarios pueden atender citas
+    - La cita debe estar en estado 'confirmada'
+    - Se registra el diagnóstico y peso de la mascota
+    - La cita pasa a estado 'completada'
+    """
+    # Verificar que el usuario sea veterinario
+    if current_user.rol != "veterinario":
+        raise HTTPException(403, "Solo veterinarios pueden atender citas.")
+
+    # Buscar la cita
+    cita = db.get(Cita, idCita)
+    if not cita:
+        raise HTTPException(404, "Cita no encontrada.")
+
+    # Verificar que la cita esté confirmada
+    if cita.estado != "confirmada":
+        raise HTTPException(400, "Solo se pueden atender citas confirmadas.")
+
+    # Actualizar la cita
+    cita.diagnostico = diagnostico
+    cita.peso = peso
+    cita.estado = "completada"
+
+    db.commit()
+    db.refresh(cita)
+
+    # Obtener el tipo de servicio
+    servicio = db.get(Servicio, cita.idServicio)
+    tipo_servicio = TipoServicio(servicio.nombre)
+
+    return CitaDto(
+        idCita=cita.idCita,
+        idMascota=cita.idMascota,
+        tipoServicio=tipo_servicio,
+        fechaHora=cita.fechaHora,
+        notasAdicionales=cita.notasAdicionales,
+        estado=cita.estado,
+        motivoCancelacion=cita.motivoCancelacion,
+        diagnostico=cita.diagnostico,
+        peso=cita.peso
+    )
+
+@router.get(
+    "/historial/{idMascota}",
+    response_model=List[CitaDto],
+    summary="Historial médico de una mascota"
+)
+def historial_medico(
+    idMascota: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    """
+    Devuelve el historial médico de una mascota (solo citas completadas), ordenadas por fecha descendente.
+    - El dueño de la mascota, veterinarios y admins pueden consultar el historial.
+    """
+    # Verificar que la mascota exista
+    mascota = db.get(Mascota, idMascota)
+    if not mascota:
+        raise HTTPException(404, "Mascota no encontrada.")
+
+    # Permitir solo al dueño, veterinario o admin
+    if not (
+        (current_user.rol == "cliente" and mascota.idUsuario == current_user.idUser)
+        or current_user.rol in ["veterinario", "admin"]
+    ):
+        raise HTTPException(403, "No tienes permiso para ver el historial de esta mascota.")
+
+    # Consultar citas completadas
+    citas = (
+        db.query(Cita)
+        .filter(Cita.idMascota == idMascota, Cita.estado == "completada")
+        .order_by(Cita.fechaHora.desc())
+        .all()
+    )
+
+    resultado = []
+    for cita in citas:
+        servicio = db.get(Servicio, cita.idServicio)
+        tipo_servicio = TipoServicio(servicio.nombre)
+        resultado.append(CitaDto(
+            idCita=cita.idCita,
+            idMascota=cita.idMascota,
+            tipoServicio=tipo_servicio,
+            fechaHora=cita.fechaHora,
+            notasAdicionales=cita.notasAdicionales,
+            estado=cita.estado,
+            motivoCancelacion=cita.motivoCancelacion,
+            diagnostico=cita.diagnostico,
+            peso=cita.peso
+        ))
+    return resultado
+
+@router.get(
+    "/",
+    response_model=List[CitaDto],
+    summary="Listar Todas las Citas"
+)
+def listar_citas(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    """
+    Lista todas las citas del sistema.
+    
+    - Clientes: ven solo sus propias citas
+    - Veterinarios: ven todas las citas
+    - Asistentes: ven todas las citas
+    """
+    # Filtrar citas según el rol del usuario
+    if current_user.rol == "cliente":
+        citas = db.query(Cita).filter(Cita.idUsuario == current_user.idUser).all()
+    else:
+        citas = db.query(Cita).all()
+
+    resultado = []
+    for cita in citas:
+        servicio = db.get(Servicio, cita.idServicio)
+        tipo_servicio = TipoServicio(servicio.nombre)
+        resultado.append(CitaDto(
+            idCita=cita.idCita,
+            idMascota=cita.idMascota,
+            tipoServicio=tipo_servicio,
+            fechaHora=cita.fechaHora,
+            notasAdicionales=cita.notasAdicionales,
+            estado=cita.estado,
+            motivoCancelacion=cita.motivoCancelacion,
+            diagnostico=cita.diagnostico,
+            peso=cita.peso
+        ))
+    return resultado
