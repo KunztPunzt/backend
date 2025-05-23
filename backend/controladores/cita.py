@@ -243,3 +243,42 @@ def obtener_veterinarios_disponibles(
         )
     
     return veterinarios_dto
+
+@router.get(
+    "/",
+    response_model=List[CitaDto],
+    summary="Listar Todas las Citas"
+)
+def listar_citas(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    """
+    Lista todas las citas del sistema.
+    
+    - Clientes: ven solo sus propias citas
+    - Veterinarios: ven todas las citas
+    - Asistentes: ven todas las citas
+    """
+    # Filtrar citas según el rol del usuario
+    if current_user.rol == "cliente":
+        citas = db.query(Cita).filter(Cita.idUsuario == current_user.idUser).all()
+    else:
+        citas = db.query(Cita).all()
+
+    resultado = []
+    for cita in citas:
+        servicio = db.get(Servicio, cita.idServicio)
+        tipo_servicio = TipoServicio(servicio.nombre)
+        resultado.append(CitaDto(
+            idCita=cita.idCita,
+            idMascota=cita.idMascota,
+            tipoServicio=tipo_servicio,
+            fechaHora=cita.fechaHora,
+            notasAdicionales=cita.notasAdicionales,
+            estado=cita.estado,
+            motivoCancelacion=cita.motivoCancelacion,
+            diagnostico=cita.diagnostico,
+            peso=cita.peso
+        ))
+    return resultado
