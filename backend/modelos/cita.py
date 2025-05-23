@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, DateTime, ForeignKey, Boolean
-from sqlalchemy.dialects.mssql import NVARCHAR
+from sqlalchemy.dialects.mssql import NVARCHAR, DECIMAL
 from sqlalchemy.orm import relationship
 
 from backend.servicios.baseDatos import Base
@@ -18,6 +18,8 @@ class Cita(Base):
     estado = Column(NVARCHAR(20), nullable=False, default="pendiente")
     recordatorioEnviado = Column(Boolean, nullable=False, default=False)
     motivoCancelacion = Column(NVARCHAR(500), nullable=True)
+    diagnostico = Column(NVARCHAR(1000), nullable=True)
+    peso = Column(DECIMAL(5, 2), nullable=True)
     
 
     # Relaciones ORM

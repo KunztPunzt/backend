@@ -48,4 +48,32 @@ class VeterinarioRegistro(BaseModel):
     almaMater: constr(min_length=2, max_length=200)
     diploma: UploadFile
     añosExperiencia: int
-    especialidad: constr(min_length=2, max_length=100) 
+    especialidad: constr(min_length=2, max_length=100)
+
+class UsuarioBase(BaseModel):
+    nombre: str
+    apellidos: str
+    email: EmailStr
+    rol: str
+    estadoCuenta: str
+
+class UsuarioResponse(UsuarioBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+class UsuarioUpdate(BaseModel):
+    nombre: Optional[str] = None
+    apellidos: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    rol: Optional[str] = None
+    estadoCuenta: Optional[str] = None
+
+class AsistenteRegistro(BaseModel):
+    # Datos de usuario
+    nombre: constr(min_length=2, max_length=100)
+    apellidos: constr(min_length=2, max_length=100)
+    email: EmailStr
+    password: constr(min_length=8)

@@ -1,13 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException, status, File, Form, UploadFile, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from fastapi.responses import FileResponse
+from backend.servicios.reportes import ServicioReportes
+import uuid
+import os
+from datetime import datetime
 
 from backend.servicios.baseDatos import get_db
 from backend.servicios.administrador import ServicioAdministrador
 from backend.dtos.administrador import (
-    AdministradorCreate,
     EstadisticasSistema,
-    VeterinarioRegistro
+    VeterinarioRegistro,
+    UsuarioUpdate,
+    UsuarioResponse,
+    AsistenteRegistro
 )
 from backend.utilidades.seguridad import obtenerUsuarioActual
 from backend.utilidades.enviarCorreo import send_activation_email
@@ -17,30 +24,92 @@ router = APIRouter(
     tags=["Administrador"]
 )
 
-@router.post(
-    "/", 
-    response_model=AdministradorCreate, 
-    status_code=status.HTTP_201_CREATED, 
-    name="Crear Nuevo Administrador",
-    summary="Crear Nuevo Administrador"
+@router.get(
+    "/usuarios", 
+    response_model=List[UsuarioResponse],
+    name="Listar Usuarios",
+    summary="Listar Usuarios"
 )
-def crearNuevoAdministrador(
-    admin: AdministradorCreate,
+def listarUsuarios(
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     usuarioActual: dict = Depends(obtenerUsuarioActual)
 ):
     """
-    Crea un nuevo administrador en el sistema.
-    Solo los administradores existentes pueden crear nuevos administradores.
+    Lista todos los usuarios del sistema.
+    Solo los administradores pueden ver esta lista.
     """
     if usuarioActual["rol"] != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tiene permisos para crear administradores"
+            detail="No tiene permisos para ver usuarios"
         )
     
     servicio = ServicioAdministrador(db)
-    return servicio.crearAdministrador(admin)
+    return servicio.listarUsuarios(skip=skip, limit=limit)
+
+@router.delete(
+    "/usuarios/{usuario_id}",
+    status_code=status.HTTP_200_OK,
+    name="Eliminar Usuario",
+    summary="Eliminar Usuario"
+)
+def eliminarUsuario(
+    usuario_id: int,
+    db: Session = Depends(get_db),
+    usuarioActual: dict = Depends(obtenerUsuarioActual)
+):
+    """
+    Elimina un usuario del sistema.
+    Solo los administradores pueden eliminar usuarios.
+    """
+    if usuarioActual["rol"] != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tiene permisos para eliminar usuarios"
+        )
+    
+    servicio = ServicioAdministrador(db)
+    if not servicio.eliminarUsuario(usuario_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado"
+        )
+    
+    return {"mensaje": "Usuario eliminado exitosamente"}
+
+@router.put(
+    "/usuarios/{usuario_id}",
+    response_model=UsuarioResponse,
+    name="Modificar Usuario",
+    summary="Modificar Usuario"
+)
+def modificarUsuario(
+    usuario_id: int,
+    usuario: UsuarioUpdate,
+    db: Session = Depends(get_db),
+    usuarioActual: dict = Depends(obtenerUsuarioActual)
+):
+    """
+    Modifica la información de un usuario.
+    Solo los administradores pueden modificar usuarios.
+    """
+    if usuarioActual["rol"] != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tiene permisos para modificar usuarios"
+        )
+    
+    servicio = ServicioAdministrador(db)
+    usuario_actualizado = servicio.modificarUsuario(usuario_id, usuario)
+    if not usuario_actualizado:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado"
+        )
+    
+    return usuario_actualizado
 
 @router.get(
     "/estadisticas", 
@@ -174,19 +243,16 @@ def validarDiplomaVeterinario(
     summary="Registrar Nuevo Asistente"
 )
 def registrarNuevoAsistente(
-    nombre: str = Form(...),
-    apellidos: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
-    background_tasks: BackgroundTasks = BackgroundTasks(),
+    asistente: AsistenteRegistro,
     db: Session = Depends(get_db),
     usuarioActual: dict = Depends(obtenerUsuarioActual)
 ):
     """
     Registra un nuevo asistente en el sistema.
     
-    - Solo los administradores pueden registrar nuevos asistentes
-    - El sistema envía un correo de activación al asistente registrado
+    - Solo los administradores pueden registrar asistentes
+    - El asistente se crea con cuenta activa inmediatamente
+    - Se requiere nombre, apellidos, email y contraseña
     """
     if usuarioActual["rol"] != "admin":
         raise HTTPException(
@@ -195,27 +261,64 @@ def registrarNuevoAsistente(
         )
     
     servicio = ServicioAdministrador(db)
-    usuario = servicio.registrarAsistente(
-        nombre=nombre,
-        apellidos=apellidos,
-        email=email,
-        password=password
+    nuevo_asistente = servicio.crearAsistente(
+        nombre=asistente.nombre,
+        apellidos=asistente.apellidos,
+        email=asistente.email,
+        password=asistente.password
     )
     
-    if not usuario:
+    if not nuevo_asistente:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="El email ya está registrado"
         )
     
-    # Enviar correo de activación
-    background_tasks.add_task(
-        send_activation_email,
-        usuario.email,
-        usuario.tokenActivacion
+    return {
+        "mensaje": "Asistente registrado exitosamente",
+        "id": nuevo_asistente.idUser,
+        "email": nuevo_asistente.email,
+        "nombre": f"{nuevo_asistente.nombre} {nuevo_asistente.apellidos}",
+        "rol": nuevo_asistente.rol
+    }
+
+@router.get(
+    "/estadisticas/reporte",
+    name="Generar Reporte de Estadísticas",
+    summary="Generar Reporte de Estadísticas"
+)
+def generarReporteEstadisticas(
+    db: Session = Depends(get_db),
+    usuarioActual: dict = Depends(obtenerUsuarioActual)
+):
+    """
+    Genera un reporte PDF con las estadísticas del sistema.
+    Solo los administradores pueden generar este reporte.
+    """
+    if usuarioActual["rol"] != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tiene permisos para generar reportes"
+        )
+    
+    # Obtener estadísticas
+    servicio = ServicioAdministrador(db)
+    estadisticas = servicio.getEstadisticas()
+    
+    # Generar nombre único para el archivo
+    nombre_archivo = f"estadisticas_{uuid.uuid4().hex}.pdf"
+    carpeta = os.path.join("static", "reportes")
+    ruta_archivo = os.path.join(carpeta, nombre_archivo)
+    
+    # Generar reporte
+    ServicioReportes.generarReporteEstadisticas(
+        estadisticas=estadisticas.dict(),
+        output_path=ruta_archivo
     )
     
-    return {
-        "mensaje": "Asistente registrado exitosamente. Se ha enviado un correo de activación.",
-        "email": usuario.email
-    } 
+    # Devolver archivo
+    return FileResponse(
+        path=ruta_archivo,
+        filename=f"estadisticas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+        media_type="application/pdf"
+    )
