@@ -50,7 +50,6 @@ class VeterinarioRegistro(BaseModel):
     añosExperiencia: int
     especialidad: constr(min_length=2, max_length=100)
 
-<<<<<<< Updated upstream
 class UsuarioBase(BaseModel):
     nombre: str
     apellidos: str
@@ -70,12 +69,11 @@ class UsuarioUpdate(BaseModel):
     email: Optional[EmailStr] = None
     password: Optional[str] = None
     rol: Optional[str] = None
-    estadoCuenta: Optional[str] = None 
-=======
+    estadoCuenta: Optional[str] = None
+
 class AsistenteRegistro(BaseModel):
     # Datos de usuario
     nombre: constr(min_length=2, max_length=100)
     apellidos: constr(min_length=2, max_length=100)
     email: EmailStr
-    password: constr(min_length=8) 
->>>>>>> Stashed changes
+    password: constr(min_length=8)
