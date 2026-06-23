@@ -1,1 +1,39 @@
-app.log 
+@'
+# Secretos
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+yavanna/
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs
+app.log
+*.log
+
+# Bases de datos locales
+*.sqlite
+*.sqlite3
+*.db
+'@ | Set-Content .gitignore -Encoding UTF8 
